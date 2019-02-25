@@ -16,6 +16,7 @@ function createWindow() {
   // Check if dev environment
   if (devEnv === 'false') {
     win.loadURL('http://localhost:4200');
+    console.warn("Please reload the application window after the Angular app is compiled successfully for the first time.");
   }
   else {
     win.loadURL(`file://${__dirname}/dist/index.html`);

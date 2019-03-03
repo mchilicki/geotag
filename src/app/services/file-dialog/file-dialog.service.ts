@@ -11,43 +11,27 @@ export class FileDialogService {
   constructor(private electronService: ElectronService) { }
 
   loadImageFiles(): string[] {
-    this.electronService.remote.dialog.showOpenDialog(
+    return this.electronService.remote.dialog.showOpenDialog(
       {
         properties: ['openFile', 'multiSelections'],
         filters: [
           { name: 'Images', extensions: IMAGE_EXTENSIONS }
         ]
-      },
-      (filePaths) => this.onFileDialogClosed(filePaths));
-
-    return this.files;
+      });
   }
 
   loadFilesFromDirectory(): string[] {
-    this.electronService.remote.dialog.showOpenDialog(
+    const dirPaths = this.electronService.remote.dialog.showOpenDialog(
       {
         properties: ['openDirectory']
-      },
-      (filePaths) => this.onFileDialogClosed(filePaths, true));
-
-    return this.files;
-  }
-
-  private onFileDialogClosed(filePaths: string[], isDirectory?: boolean) {
-    if (!isDirectory) {
-      this.files = filePaths;
-    } else {
-      if (filePaths && filePaths.length > 0) {
-        const fs = this.electronService.remote.require('fs');
-        const path = this.electronService.remote.require('path');
-        const directory = filePaths[0];
-
-        fs.readdir(directory, (_: any, files: string[]) => {
-          this.files = files.map(file => path.join(directory, file));
-        });
-      } else {
-        this.files = null;
-      }
+      });
+    if (dirPaths && dirPaths.length > 0) {
+      const fs = this.electronService.remote.require('fs');
+      const path = this.electronService.remote.require('path');
+      const directory = dirPaths[0];
+      return fs.readdirSync(directory)
+          .filter(file => IMAGE_EXTENSIONS.includes(path.extname(file).replace('.', '')))
+          .map(file => path.join(directory, file));
     }
   }
 }

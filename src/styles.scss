@@ -1,1 +1,60 @@
-/* You can add global styles to this file, and also import other style files */
+$dark: rgb(100, 100, 100);
+$light: rgb(185, 185, 185);
+$darker: rgb(29, 29, 29);
+$lighter: rgb(228, 228, 228);
+
+.dark {
+    background-color: $darker;
+    color: $lighter;
+
+    .themable {
+        background-color: $darker;
+        color: $lighter;
+    }
+}
+
+.light {
+    background-color: $lighter;
+    color: $darker;
+
+    .themable {
+        background-color: $lighter;
+        color: $darker;
+    }
+}
+
+.toggle {
+    border-radius: 15px;
+    width: 36px;
+    height: 20px;
+    cursor: pointer;
+    position: relative;
+    transition: 0.2s linear;
+
+    &:before {
+        content: '';
+        width: 14px;
+        height: 14px;
+        border-radius: 100%;
+        position: absolute;
+        top: 3px;
+    }
+
+    &.on {
+        background-color: $dark;
+
+        &::before {
+            background-color: $darker;
+            right: 3px;
+        }
+    }
+    
+    &.off {
+        background-color: $light;
+
+        &::before {
+            background-color: $lighter;
+            left: 3px;
+        }
+    }
+}

@@ -13,6 +13,11 @@
     "electron-build": "ng build --prod && npm run electron-run",
     "electron-dev": "concurrently --kill-others --success \"first\" \"ng serve\" \"electron . false\""
   },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~7.2.0",
@@ -24,6 +29,7 @@
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
     "core-js": "^2.5.4",
+    "ngx-electron": "^2.1.1",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"

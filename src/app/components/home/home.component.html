@@ -1,0 +1,7 @@
+<button (click)="openFileDialog()">
+  Load files
+  </button>
+<button (click)="openDirectoryDialog()">
+  Load directory
+  </button>
+  <img *ngFor="let item of files" [src]="item | safe">

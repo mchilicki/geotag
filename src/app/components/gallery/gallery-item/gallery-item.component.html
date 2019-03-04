@@ -1,0 +1,9 @@
+<div class="image-card uk-card uk-card-default uk-card-hover">
+  <div class="image uk-card-media-top">
+    <img class="thumbnail" [src]="file | safe" [title]="file | basename" (load)="loaded = true" [hidden]="!loaded">
+    <img class="preloader" src="assets/img/preloader.svg" [hidden]="loaded">
+  </div>
+  <div class="filename uk-card-body themable">
+    <p>{{file | basename}}</p>
+  </div>
+</div>

@@ -2,24 +2,47 @@ $dark: rgb(100, 100, 100);
 $light: rgb(185, 185, 185);
 $darker: rgb(29, 29, 29);
 $lighter: rgb(228, 228, 228);
-
 .dark {
     background-color: $darker;
     color: $lighter;
-
     .themable {
-        background-color: $darker;
-        color: $lighter;
+        &,
+        a,
+        .uk-nav li,
+        li>a {
+            background-color: $darker;
+            color: $lighter;
+        }
+        a,
+        li>a {
+            &:hover,
+            &:active,
+            &:focus {
+                color: $light;
+            }
+        }
     }
 }
 
 .light {
     background-color: $lighter;
-    color: $darker;
-
+    color: $dark;
     .themable {
-        background-color: $lighter;
-        color: $darker;
+        &,
+        a,
+        .uk-nav li,
+        li>a {
+            background-color: $lighter;
+            color: $dark;
+        }
+        a,
+        li>a {
+            &:hover,
+            &:active,
+            &:focus {
+                color: $darker;
+            }
+        }
     }
 }
 
@@ -30,7 +53,6 @@ $lighter: rgb(228, 228, 228);
     cursor: pointer;
     position: relative;
     transition: 0.2s linear;
-
     &:before {
         content: '';
         width: 14px;
@@ -39,19 +61,15 @@ $lighter: rgb(228, 228, 228);
         position: absolute;
         top: 3px;
     }
-
     &.on {
         background-color: $dark;
-
         &::before {
             background-color: $darker;
             right: 3px;
         }
     }
-    
     &.off {
         background-color: $light;
-
         &::before {
             background-color: $lighter;
             left: 3px;

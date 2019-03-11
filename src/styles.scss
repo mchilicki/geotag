@@ -2,6 +2,8 @@ $dark: rgb(100, 100, 100);
 $light: rgb(185, 185, 185);
 $darker: rgb(29, 29, 29);
 $lighter: rgb(228, 228, 228);
+$primary: rgb(209, 130, 12);
+
 .dark {
     background-color: $darker;
     color: $lighter;
@@ -44,6 +46,10 @@ $lighter: rgb(228, 228, 228);
             }
         }
     }
+}
+
+.primary {
+    color: $primary;
 }
 
 .toggle {

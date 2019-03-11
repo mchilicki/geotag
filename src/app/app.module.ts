@@ -10,6 +10,7 @@ import { GalleryComponent } from './components/gallery/gallery.component';
 import { GalleryItemComponent } from './components/gallery/gallery-item/gallery-item.component';
 import { BasenamePipe } from './shared/basename.pipe';
 import { CookieService } from 'ngx-cookie-service';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { CookieService } from 'ngx-cookie-service';
     SafePipe,
     GalleryComponent,
     GalleryItemComponent,
-    BasenamePipe
+    BasenamePipe,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,

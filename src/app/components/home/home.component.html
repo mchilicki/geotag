@@ -1,24 +1,14 @@
-<div uk-height-viewport>
-  <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
-    <nav class="uk-navbar-container uk-navbar-transparent themable"  uk-navbar>
-      <div class="uk-navbar-left">
-        <div class="uk-navbar-item">
-          <button class="uk-button uk-button-primary uk-button-large" (click)="openFileDialog()">
-            Load files
-          </button>
-          <button class="uk-button uk-button-secondary uk-button-large" (click)="openDirectoryDialog()">
-            Load directory
-          </button>
-        </div>
-      </div>
-      <div class="uk-navbar-right">
-        <div class="uk-navbar-item">
-          <div class="toggle" [ngClass]="(darkMode)?'on':'off'" (click)="toggleThemeMode()"></div>
-        </div>
-      </div>
-    </nav>
-  </div>
-  <div class="uk-container">
+<div uk-height-viewport="offset-top: true">
+  <div class="uk-container" *ngIf="files; else noFiles">
     <app-gallery [files]="files"></app-gallery>
   </div>
+  <ng-template #noFiles>
+    <div class="uk-flex uk-flex-center uk-flex-middle uk-text-center" uk-height-viewport="offset-top: true">
+      <div>
+        <span uk-icon="icon: album; ratio: 4"></span>
+        <p>No images loaded yet</p>
+        <p><span uk-icon="chevron-left"></span> Use <strong>Upload</strong> options in the menu bar</p>
+      </div>
+    </div>
+  </ng-template>
 </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { FileInfo } from 'src/app/models/file-info';
 
 @Component({
   selector: 'app-gallery',
@@ -7,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class GalleryComponent implements OnInit {
 
-  @Input() files: string[];
+  @Input() files: FileInfo[];
 
   constructor() { }
 

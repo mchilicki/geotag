@@ -11,6 +11,7 @@ import { GalleryItemComponent } from './components/gallery/gallery-item/gallery-
 import { BasenamePipe } from './shared/basename.pipe';
 import { CookieService } from 'ngx-cookie-service';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import {NgxImageCompressService} from 'ngx-image-compress';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     AppRoutingModule,
     NgxElectronModule
   ],
-  providers: [CookieService],
+  providers: [CookieService, NgxImageCompressService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

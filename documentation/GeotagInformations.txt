@@ -17,12 +17,12 @@ map internetowych.
     a) należy utworzyć narzędzie używające map internetowych, aby można było na nie nanosić zdjęcia
     i określać lokalizację ich utworzenia
     b) należy zaimplementować edycję atrybutów EXIF, aby móc modyfikować lokalizację utworzenia zdjęcia
-    b) należy zapewnić możliwość podglądu wszystkich zdjęć
+    b) należy zapewnić możliwość podglądu wszystkich zdjęć z wybranej ścieżki
     c) należy zapewnić możliwość podglądu zdjęcia na całym ekranie aplikacji
 
 4. Zakres projektu
-    a) widok wyświetlający mapę, obsługa przenoszenia zdjęć poprzez drag&drop z listy na mapę,
-    interaktywny geotagging
+    a) widok wyświetlający mapę, obsługa przenoszenia zdjęć poprzez wykonanie gestu 
+    drag&drop/przeciągnij i upuść z listy na mapę, interaktywny geotagging
         - na tym widoku użytkownik może przenosić z listy po lewej stronie miniaturki zdjęć i 
         puszczać je na miejsce w mapie
         - puszczenie miniaturki ze zdjęciem na mapę spowoduje odczytanie współrzędnych geograficznych
@@ -35,10 +35,10 @@ map internetowych.
         za przechowywanie współrzędnych geograficznych miejsca utworzenia zdjęcia
     c) obsługa wczytywania zdjęć z wybranego folderu
         - należy stworzyć obsługę wczytywania zdjęć z dysku lokalnego do pamięci aplikacji dla danego folderu
-        - wybór folderu następuje poprzez wywołanie okna dialogowego z systemowym eksproratorem plików i folderów
+        - wybór folderu następuje poprzez wywołanie okna dialogowego z systemowym eksploratorem plików i folderów
     d) obsługa wczytywania zdjęć z wielu wybranych plików
         - należy stworzyć obsługę wczytywania zdjęć z dysku lokalnego do pamięci aplikacji dla kolekcji wybranych zdjęć
-        - wybór folderu następuje poprzez wywołanie okna dialogowego z systemowym eksproratorem plików i folderów
+        - wybór folderu następuje poprzez wywołanie okna dialogowego z systemowym eksploratorem plików i folderów
     e) widok wyświetlania listy miniatur zdjęć
         - należy stworzyć widok z możliwością wyświetlenia kolekcji wybranych zdjęć
     f) widok podglądu pełnego zdjęcia na cały ekran aplikacji
@@ -59,11 +59,12 @@ map internetowych.
         a) utworzenie opcji drag&drop z listy miniatur na mapę internetową
         b) utworzenie obsługi zapisywania atrybutów EXIF do zdjęcia
         c) utworzenie opcji przechodzenia między zdjęciami w podglądzie zdjęcia na pełnym ekranie aplikacji
-        d) utworzenie połączenia wybierania zdjęcia, przenoszenia go na mapę i zapisywania do niego współrzędnych geograficznych
+        d) utworzenie połączenia dwóch funkcjonalności - wybierania zdjęcia, przenoszenia go na mapę oraz 
+        zapisywania do niego współrzędnych geograficznych
 
 6. Charakterystyka narzędzia
 Do wykonania projektu wykorzystamy język Typescript, czyli nadzbiór języka Javascript oraz Angular, 
 czyli framework języka Javascript. Projekt będzie aplikacją dekstopową i będzie działał w oparciu o
 środowisko Electron, które służy do uruchamiania aplikacji w silniku Chromium na komputerach osobistych 
 o dowolnej platformie. Do odczytywania oraz zapisywania atrybutów EXIF wykorzystamy bibliotekę exif-js 
-po licencją MIT. Do wyświetlania map internetowych wykorzystamy otwarto źródłowe mapy OpenStreetMaps.
+udostępnioną na licencji MIT. Do wyświetlania map internetowych wykorzystamy otwarto źródłowe mapy OpenStreetMaps.

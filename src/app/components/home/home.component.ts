@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FileDialogService } from 'src/app/services/file-dialog/file-dialog.service';
+import { FileInfo } from 'src/app/models/file-info';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +9,7 @@ import { FileDialogService } from 'src/app/services/file-dialog/file-dialog.serv
 })
 export class HomeComponent implements OnInit {
 
-  files: string[];
+  files: FileInfo[];
 
   constructor(private fileService: FileDialogService) { }
 

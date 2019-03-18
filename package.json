@@ -31,6 +31,7 @@
     "core-js": "^2.5.4",
     "ngx-cookie-service": "^2.1.0",
     "ngx-electron": "^2.1.1",
+    "ngx-image-compress": "^7.2.2",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "uikit": "^3.0.3",

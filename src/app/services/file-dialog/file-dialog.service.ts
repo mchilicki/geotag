@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from 'ngx-electron';
 import { Subject } from 'rxjs';
+import { NgxImageCompressService } from 'ngx-image-compress';
+import { FileInfo } from 'src/app/models/file-info';
 
 const IMAGE_EXTENSIONS = ['jpg', 'png', 'gif'];
 
@@ -8,15 +10,17 @@ const IMAGE_EXTENSIONS = ['jpg', 'png', 'gif'];
   providedIn: 'root'
 })
 export class FileDialogService {
-  files: string[];
+  files: FileInfo[];
+  filePaths: string[];
 
-  private subject = new Subject<string[]>();
+  private subject = new Subject<FileInfo[]>();
   getFiles = this.subject.asObservable();
 
-  constructor(private electronService: ElectronService) { }
+  constructor(private electronService: ElectronService,
+              private imageCompress: NgxImageCompressService) { }
 
   loadImageFiles() {
-    this.files = this.electronService.remote.dialog.showOpenDialog(
+    this.filePaths = this.electronService.remote.dialog.showOpenDialog(
       {
         properties: ['openFile', 'multiSelections'],
         filters: [
@@ -24,7 +28,10 @@ export class FileDialogService {
         ]
       });
 
+    this.files = this.compressImages(this.filePaths); // .then(result => {
+        // this.files = result;
     this.subject.next(this.files);
+        // });
   }
 
   loadFilesFromDirectory() {
@@ -36,11 +43,30 @@ export class FileDialogService {
       const fs = this.electronService.remote.require('fs');
       const path = this.electronService.remote.require('path');
       const directory = dirPaths[0];
-      this.files = fs.readdirSync(directory)
+      this.filePaths = fs.readdirSync(directory)
         .filter(file => IMAGE_EXTENSIONS.includes(path.extname(file).replace('.', '')))
         .map(file => path.join(directory, file));
 
+      this.files = this.compressImages(this.filePaths); // .then(result => {
+      // this.files = result;
       this.subject.next(this.files);
+      // });
     }
+  }
+
+  compressImages(images: string[]): FileInfo[] {
+    const compressedImages: FileInfo[] = [];
+    images.forEach(async image => {
+      await this.imageCompress.compressFile(image, 1, 30, 30).then(
+        result => {
+          compressedImages.push({
+            name: image,
+            path: result
+          });
+        }
+      );
+    });
+
+    return compressedImages;
   }
 }

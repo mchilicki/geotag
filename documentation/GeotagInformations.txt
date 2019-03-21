@@ -24,8 +24,8 @@ map internetowych.
     a) widok wyświetlający mapę, obsługa przenoszenia zdjęć poprzez wykonanie gestu 
     drag&drop/przeciągnij i upuść z listy na mapę, interaktywny geotagging
         - na tym widoku użytkownik może przenosić z listy po lewej stronie miniaturki zdjęć i 
-        puszczać je na miejsce w mapie
-        - puszczenie miniaturki ze zdjęciem na mapę spowoduje odczytanie współrzędnych geograficznych
+        upuszczać je na miejsce w mapie
+        - upuszczenie miniaturki ze zdjęciem na mapę spowoduje odczytanie współrzędnych geograficznych
         danego miejsca i tymczasowe jego przypisanie do zdjęcia 
         - kliknięcie przycisku "Zapisz" spowoduje ustawienie atrybutu EXIF zdjęcia na przypisane 
         wcześniej tymczasowo współrzędne geograficzne

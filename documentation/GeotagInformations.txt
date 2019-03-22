@@ -66,5 +66,5 @@ map internetowych.
 Do wykonania projektu wykorzystamy język Typescript, czyli nadzbiór języka Javascript oraz Angular, 
 czyli framework języka Javascript. Projekt będzie aplikacją dekstopową i będzie działał w oparciu o
 środowisko Electron, które służy do uruchamiania aplikacji w silniku Chromium na komputerach osobistych 
-o dowolnej platformie. Do odczytywania oraz zapisywania atrybutów EXIF wykorzystamy bibliotekę exif-js 
+o dowolnej platformie. Do odczytywania oraz zapisywania atrybutów EXIF wykorzystamy bibliotekę piexifjs 
 udostępnioną na licencji MIT. Do wyświetlania map internetowych wykorzystamy otwarto źródłowe mapy OpenStreetMaps.

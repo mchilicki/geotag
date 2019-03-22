@@ -1,0 +1,70 @@
+Skład sekcji
+Marcin Chilicki - mail: marcchi996@student.polsl.pl
+Paweł Serwoński
+Łukasz Błasiak
+Wojciech Pszonak
+
+1. Nazwa projektu
+Geotag
+
+2. Wizja projektu
+Celem projektu jest utworzenie narzędzia, które będzie umożliwiało łatwe tagowanie zdjęć 
+poprzez wybieranie dla nich miejsca/lokalizacji ich utworzenia. Dzięki temu projektowi będziemy mogli 
+bliżej poznać pracę z atrybutami EXIF plików zdjęć oraz zapoznać się z działaniem oraz tworzeniem
+map internetowych. 
+
+3. Cele projektu
+    a) należy utworzyć narzędzie używające map internetowych, aby można było na nie nanosić zdjęcia
+    i określać lokalizację ich utworzenia
+    b) należy zaimplementować edycję atrybutów EXIF, aby móc modyfikować lokalizację utworzenia zdjęcia
+    b) należy zapewnić możliwość podglądu wszystkich zdjęć z wybranej ścieżki
+    c) należy zapewnić możliwość podglądu zdjęcia na całym ekranie aplikacji
+
+4. Zakres projektu
+    a) widok wyświetlający mapę, obsługa przenoszenia zdjęć poprzez wykonanie gestu 
+    drag&drop/przeciągnij i upuść z listy na mapę, interaktywny geotagging
+        - na tym widoku użytkownik może przenosić z listy po lewej stronie miniaturki zdjęć i 
+        upuszczać je na miejsce w mapie
+        - upuszczenie miniaturki ze zdjęciem na mapę spowoduje odczytanie współrzędnych geograficznych
+        danego miejsca i tymczasowe jego przypisanie do zdjęcia 
+        - kliknięcie przycisku "Zapisz" spowoduje ustawienie atrybutu EXIF zdjęcia na przypisane 
+        wcześniej tymczasowo współrzędne geograficzne
+        - na mapie, na danych lokalizacjach będą wyświetlane zgeotagowane już zdjęcia
+    b) obsługa zmieniania atrybutów EXIF odpowiedzialnych za lokalizację miejsca utworzenia zdjęcia
+        - należy stworzyć obsługę odczytywania oraz zapisywania ze/do zdjęcia atrybutu odpowiedzialnego 
+        za przechowywanie współrzędnych geograficznych miejsca utworzenia zdjęcia
+    c) obsługa wczytywania zdjęć z wybranego folderu
+        - należy stworzyć obsługę wczytywania zdjęć z dysku lokalnego do pamięci aplikacji dla danego folderu
+        - wybór folderu następuje poprzez wywołanie okna dialogowego z systemowym eksploratorem plików i folderów
+    d) obsługa wczytywania zdjęć z wielu wybranych plików
+        - należy stworzyć obsługę wczytywania zdjęć z dysku lokalnego do pamięci aplikacji dla kolekcji wybranych zdjęć
+        - wybór folderu następuje poprzez wywołanie okna dialogowego z systemowym eksploratorem plików i folderów
+    e) widok wyświetlania listy miniatur zdjęć
+        - należy stworzyć widok z możliwością wyświetlenia kolekcji wybranych zdjęć
+    f) widok podglądu pełnego zdjęcia na cały ekran aplikacji
+        - należy stworzyć widok z możliwością wyświetlania zdjęcia na pełen ekran aplikacji
+        - po obydwu bokach widoku powinny znajdować się strzałki służące do przechodzenia między zdjęciami
+5. Etapy w projekcie
+    1) Marzec
+        a) utworzenie pustego projektu
+        b) utworzenie obsługi wczytywania zdjęć z folderu 
+        c) utworzenie obsługi wczytywania zdjęć z kolekcji plików 
+        d) utworzenie widoku do wyświetlania listy miniatur zdjęć
+    2) Kwiecień
+        a) utworzenie widoku z listą miniatur i mapą internetową
+        b) utworzenie obsługi wczytywania atrybutów EXIF do pamięci aplikacji
+        c) utworzenie widoku z podglądem zdjęcia na pełnym ekranie aplikacji
+        d) dodanie wyświetlania na mapie internetowej miniaturek zdjęć z ustawionymi już atrybutami EXIF
+    3) Maj
+        a) utworzenie opcji drag&drop z listy miniatur na mapę internetową
+        b) utworzenie obsługi zapisywania atrybutów EXIF do zdjęcia
+        c) utworzenie opcji przechodzenia między zdjęciami w podglądzie zdjęcia na pełnym ekranie aplikacji
+        d) utworzenie połączenia dwóch funkcjonalności - wybierania zdjęcia, przenoszenia go na mapę oraz 
+        zapisywania do niego współrzędnych geograficznych
+
+6. Charakterystyka narzędzia
+Do wykonania projektu wykorzystamy język Typescript, czyli nadzbiór języka Javascript oraz Angular, 
+czyli framework języka Javascript. Projekt będzie aplikacją dekstopową i będzie działał w oparciu o
+środowisko Electron, które służy do uruchamiania aplikacji w silniku Chromium na komputerach osobistych 
+o dowolnej platformie. Do odczytywania oraz zapisywania atrybutów EXIF wykorzystamy bibliotekę piexifjs 
+udostępnioną na licencji MIT. Do wyświetlania map internetowych wykorzystamy otwarto źródłowe mapy OpenStreetMaps.

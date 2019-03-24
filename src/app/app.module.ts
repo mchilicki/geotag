@@ -12,6 +12,7 @@ import { BasenamePipe } from './shared/basename.pipe';
 import { CookieService } from 'ngx-cookie-service';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import {NgxImageCompressService} from 'ngx-image-compress';
+import {ExifService} from './services/exif/exif.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import {NgxImageCompressService} from 'ngx-image-compress';
     AppRoutingModule,
     NgxElectronModule
   ],
-  providers: [CookieService, NgxImageCompressService],
+  providers: [CookieService, NgxImageCompressService, ExifService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -16,8 +16,8 @@ export class ExifService {
       const exifObject = piexif.load('data:image/jpeg;base64,' + imageAsBase64);
       if (exifObject !== 'undefined' && exifObject.GPS !== 'undefined') {
         gpsExifInfo = new GpsExifInfo(
-          this.dmsRationalToDeg(exifObject.GPS[2]).toString(),
-          this.dmsRationalToDeg(exifObject.GPS[4]).toString()
+          this.dmsRationalToDeg(exifObject.GPS[1], exifObject.GPS[2]).toString(),
+          this.dmsRationalToDeg(exifObject.GPS[3], exifObject.GPS[4]).toString()
         );
       }
       return gpsExifInfo;
@@ -36,11 +36,14 @@ export class ExifService {
 
 
 
-  private dmsRationalToDeg(coordinates) {
-     const deg = coordinates[0][0] / coordinates[0][1];
-     const min = coordinates[1][0] / coordinates[1][1];
-     const sec = coordinates[2][0] / coordinates[2][1];
-     // console.log('deg: ' + deg + ' min: ' + min + ' sec: ' + sec);
-     return deg + (min + sec / 60) / 60;
+  private dmsRationalToDeg(cardinalDirection, coordinates) {
+    const deg = coordinates[0][0] / coordinates[0][1];
+    const min = coordinates[1][0] / coordinates[1][1];
+    const sec = coordinates[2][0] / coordinates[2][1];
+    let result =  deg + (min + sec / 60) / 60;
+    if (cardinalDirection === 'S' || cardinalDirection === 'W') {
+      result = -result;
+    }
+    return result;
   }
 }

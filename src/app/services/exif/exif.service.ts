@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ElectronService} from 'ngx-electron';
 import * as piexif from 'node_modules/piexifjs/piexif';
-import {GpsExifInfo} from '../../models/gps-exif-info';
+import {ExifGpsInfo} from '../../models/exif-gps-info';
 
 @Injectable()
 export class ExifService {
@@ -10,20 +10,33 @@ export class ExifService {
   }
 
   public getExifGps(imagePath: string) {
+    let gpsExifInfo;
     try {
-      let gpsExifInfo;
-      const imageAsBase64 = this.base64_encode(imagePath);
-      const exifObject = piexif.load('data:image/jpeg;base64,' + imageAsBase64);
-      if (exifObject !== 'undefined' && exifObject.GPS !== 'undefined') {
-        gpsExifInfo = new GpsExifInfo(
+      const exifObject = this.getExifObject(imagePath);
+      if (this.containExifGpsSection(exifObject)) {
+        gpsExifInfo = new ExifGpsInfo(
           this.dmsRationalToDeg(exifObject.GPS[1], exifObject.GPS[2]).toString(),
           this.dmsRationalToDeg(exifObject.GPS[3], exifObject.GPS[4]).toString()
         );
       }
-      return gpsExifInfo;
     } catch (e) {
       console.log(e);
     }
+    return gpsExifInfo;
+  }
+
+  public hasExifGps(imagePath: string): boolean {
+    const exifObject = this.getExifObject(imagePath);
+    return this.containExifGpsSection(exifObject);
+  }
+
+  private containExifGpsSection(exifObject): boolean {
+    return exifObject !== 'undefined' && exifObject.GPS !== 'undefined' && typeof exifObject.GPS[1] !== 'undefined';
+  }
+
+  private getExifObject(imagePath: string) {
+    const imageAsBase64 = this.base64_encode(imagePath);
+    return piexif.load('data:image/jpeg;base64,' + imageAsBase64);
   }
 
   private base64_encode(imagePath: string) {

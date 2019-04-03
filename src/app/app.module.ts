@@ -12,6 +12,7 @@ import { BasenamePipe } from './shared/basename.pipe';
 import { CookieService } from 'ngx-cookie-service';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import {NgxImageCompressService} from 'ngx-image-compress';
+import {GalleryItemFullscreenComponent} from "./components/gallery/gallery-item-fullscreen/gallery-item-fullscreen.component";
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {NgxImageCompressService} from 'ngx-image-compress';
     GalleryComponent,
     GalleryItemComponent,
     BasenamePipe,
-    SidebarComponent
+    SidebarComponent,
+    GalleryItemFullscreenComponent
   ],
   imports: [
     BrowserModule,

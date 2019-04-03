@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FileInfo } from 'src/app/models/file-info';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-gallery',
@@ -10,9 +11,12 @@ export class GalleryComponent implements OnInit {
 
   @Input() files: FileInfo[];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
+  onGalleryItemClicked(path: string) {
+    this.router.navigate(['image', path]);
+  }
 }

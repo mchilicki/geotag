@@ -8,16 +8,29 @@ export class ExifService {
 
   constructor(private electronService: ElectronService) {
   }
+  /*
+    Returns true if image file has exif GPS section,
+    otherwise returns false
+   */
+  public hasExifGpsSection(imagePath: string): boolean {
+    const exifObject = this.getExifObjectFromImageFile(imagePath);
+    return this.containExifGpsSection(exifObject);
+  }
 
-  public getExifGps(imagePath: string): ExifGpsInfo {
-    let gpsExifInfo;
+  /*
+    Returns latitude and longitude in ExifGpsInfo interface format if
+    image contains exif gps section, otherwise throws exception.
+    It is recommended to combine this method with "hasExifGpsSection" method first.
+   */
+  public getExifGpsInfoFromImageFile(imagePath: string): ExifGpsInfo {
+    let gpsExifInfo: ExifGpsInfo;
     try {
-      const exifObject = this.getExifObject(imagePath);
+      const exifObject = this.getExifObjectFromImageFile(imagePath);
+      console.log(exifObject);
       if (this.containExifGpsSection(exifObject)) {
-        gpsExifInfo = new ExifGpsInfo(
-          this.dmsRationalToDeg(exifObject.GPS[1], exifObject.GPS[2]).toString(),
-          this.dmsRationalToDeg(exifObject.GPS[3], exifObject.GPS[4]).toString()
-        );
+        gpsExifInfo = {
+          latitude: this.dmsRationalToDeg(exifObject.GPS[1], exifObject.GPS[2]).toString(),
+          longitude: this.dmsRationalToDeg(exifObject.GPS[3], exifObject.GPS[4]).toString()};
       }
     } catch (e) {
       console.log(e);
@@ -25,32 +38,31 @@ export class ExifService {
     return gpsExifInfo;
   }
 
-  public hasExifGps(imagePath: string): boolean {
-    const exifObject = this.getExifObject(imagePath);
-    return this.containExifGpsSection(exifObject);
-  }
-
+  /*
+    Set or update (if exists) exif gps section of image file.
+    As parameters takes latitude and longitude in ExifGpsInfo interface format
+    and path to image file.
+   */
   public setExifGps(exifGpsInfo: ExifGpsInfo, imagePath: string) {
-    const exifObject = this.getExifObject(imagePath);
-    console.log(exifObject);
+    const imageAsBase64 = this.readImageFileAsBase64(imagePath);
+    const exifObject = this.getExifObjectFromBase64(imageAsBase64);
     exifObject.GPS[1] = Number(exifGpsInfo.latitude) < 0 ? 'W' : 'E';
     exifObject.GPS[2] = this.DegToDmsRational(Number(exifGpsInfo.latitude));
     exifObject.GPS[3] = Number(exifGpsInfo.longitude) < 0 ? 'S' : 'N';
     exifObject.GPS[4] = this.DegToDmsRational(Number(exifGpsInfo.longitude));
     const exifBytes = piexif.dump(exifObject);
-    this.updateImageExifSection(exifBytes, imagePath, exifObject);
+    this.updateImageExifSection(exifBytes, imagePath, imageAsBase64);
   }
 
-  private updateImageExifSection(exifBytes: any, imagePath: string, exifObject: any) {
-    const imageAsBase64 = this.base64_encode(imagePath);
+  private updateImageExifSection(exifBytes: any, imagePath: string, imageAsBase64: string) {
     let base64Img: string = piexif.insert(exifBytes, 'data:image/jpeg;base64,' + imageAsBase64);
-    base64Img = base64Img.substr(22);
+    base64Img = base64Img.substr(22); // Image file can't contain imageURI "header"
     this.updateImageFile(base64Img, imagePath);
 }
 
   private updateImageFile(data: string, imagePath: string) {
     const fs = this.electronService.remote.require('fs');
-    const buffer = Buffer.from(data, 'base64');
+    const buffer = Buffer.from(data, 'base64'); // decode from base64 format
     fs.writeFileSync(imagePath, buffer);
   }
 
@@ -58,20 +70,25 @@ export class ExifService {
     return exifObject !== 'undefined' && exifObject.GPS !== 'undefined' && typeof exifObject.GPS[1] !== 'undefined';
   }
 
-  private getExifObject(imagePath: string) {
-    const imageAsBase64 = this.base64_encode(imagePath);
+  private getExifObjectFromImageFile(imagePath: string) {
+    const imageAsBase64 = this.readImageFileAsBase64(imagePath);
+    return this.getExifObjectFromBase64(imageAsBase64);
+  }
+
+  private getExifObjectFromBase64(imageAsBase64: string) {
     return piexif.load('data:image/jpeg;base64,' + imageAsBase64);
   }
 
-  private base64_encode(imagePath: string) {
+  private readImageFileAsBase64(imagePath: string): string {
     const fs = this.electronService.remote.require('fs');
-    // read binary data
     const bitmap = fs.readFileSync(imagePath);
-    // convert binary data to base64 encoded string
     return Buffer.from(bitmap).toString('base64');
   }
 
-
+  /*
+    Converts latitude or longitude into degrees, minutes and seconds
+    as three rational numbers.
+   */
   private DegToDmsRational(degrees: number) {
     degrees = degrees > 0 ? degrees : -degrees;
     const minFloat = degrees % 1 * 60;
@@ -86,10 +103,10 @@ export class ExifService {
     const deg = coordinates[0][0] / coordinates[0][1];
     const min = coordinates[1][0] / coordinates[1][1];
     const sec = coordinates[2][0] / coordinates[2][1];
-    let result =  deg + (min + sec / 60) / 60;
+    let coordinate =  deg + (min + sec / 60) / 60;
     if (cardinalDirection === 'S' || cardinalDirection === 'W') {
-      result = -result;
+      coordinate = -coordinate;
     }
-    return result;
+    return coordinate;
   }
 }

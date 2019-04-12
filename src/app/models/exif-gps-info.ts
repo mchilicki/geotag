@@ -1,8 +1,4 @@
-export class ExifGpsInfo {
+export interface ExifGpsInfo {
   latitude: string;
   longitude: string;
-  constructor(latitude: string, longitude: string) {
-    this.latitude = latitude;
-    this.longitude = longitude;
-  }
 }

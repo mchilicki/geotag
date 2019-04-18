@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {ElectronService} from 'ngx-electron';
 import * as piexif from 'node_modules/piexifjs/piexif';
 import {ExifGpsInfo} from '../../models/exif-gps-info';
+import {ExifGpsRationalCoordinates} from '../../models/exif-gps-rational-coordinates';
 
 @Injectable()
 export class ExifService {
@@ -26,7 +27,6 @@ export class ExifService {
     let gpsExifInfo: ExifGpsInfo;
     try {
       const exifObject = this.getExifObjectFromImageFile(imagePath);
-      console.log(exifObject);
       if (this.containExifGpsSection(exifObject)) {
         gpsExifInfo = {
           latitude: this.dmsRationalToDeg(exifObject.GPS[1], exifObject.GPS[2]).toString(),
@@ -41,9 +41,9 @@ export class ExifService {
   /*
     Set or update (if exists) exif gps section of image file.
     As parameters takes latitude and longitude in ExifGpsInfo interface format
-    and path to image file.
+    and path to the image file.
    */
-  public setExifGps(exifGpsInfo: ExifGpsInfo, imagePath: string) {
+  public setExifGpsOfImageFile(exifGpsInfo: ExifGpsInfo, imagePath: string) {
     const imageAsBase64 = this.readImageFileAsBase64(imagePath);
     const exifObject = this.getExifObjectFromBase64(imageAsBase64);
     exifObject.GPS[1] = Number(exifGpsInfo.latitude) < 0 ? 'W' : 'E';
@@ -67,7 +67,7 @@ export class ExifService {
   }
 
   private containExifGpsSection(exifObject): boolean {
-    return exifObject !== 'undefined' && exifObject.GPS !== 'undefined' && typeof exifObject.GPS[1] !== 'undefined';
+    return typeof exifObject !== 'undefined' && typeof exifObject.GPS !== 'undefined' && typeof exifObject.GPS[1] !== 'undefined';
   }
 
   private getExifObjectFromImageFile(imagePath: string) {
@@ -89,7 +89,7 @@ export class ExifService {
     Converts latitude or longitude into degrees, minutes and seconds
     as three rational numbers.
    */
-  private DegToDmsRational(degrees: number) {
+  private DegToDmsRational(degrees: number): ExifGpsRationalCoordinates {
     degrees = degrees > 0 ? degrees : -degrees;
     const minFloat = degrees % 1 * 60;
     const secFloat = minFloat % 1 * 60;
@@ -99,7 +99,7 @@ export class ExifService {
     return [[deg, 1], [min, 1], [sec, 10000]];
   }
 
-  private dmsRationalToDeg(cardinalDirection, coordinates) {
+  private dmsRationalToDeg(cardinalDirection: string, coordinates: ExifGpsRationalCoordinates): number {
     const deg = coordinates[0][0] / coordinates[0][1];
     const min = coordinates[1][0] / coordinates[1][1];
     const sec = coordinates[2][0] / coordinates[2][1];

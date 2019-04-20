@@ -13,6 +13,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import {NgxImageCompressService} from 'ngx-image-compress';
 import {GalleryItemFullscreenComponent} from "./components/gallery/gallery-item-fullscreen/gallery-item-fullscreen.component";
+import {ExifService} from './services/exif/exif.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import {GalleryItemFullscreenComponent} from "./components/gallery/gallery-item-
     AppRoutingModule,
     NgxElectronModule
   ],
-  providers: [CookieService, NgxImageCompressService],
+  providers: [CookieService, NgxImageCompressService, ExifService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

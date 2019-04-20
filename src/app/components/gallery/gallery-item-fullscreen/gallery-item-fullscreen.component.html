@@ -1,16 +1,18 @@
 <div uk-grid>
-  <div id="photo" class="uk-width-4-5">
-      <button class="uk-button-text" uk-icon="arrow-left" (click)="onBackButtonClick()"></button>
-      <img data-src="{{name}}" uk-img>
+  <div id="photo" class="uk-width-expand">
+    <button class="uk-button-text" uk-icon="arrow-left" (click)="onBackButtonClick()"></button>
+    <img data-src="{{name}}" uk-img>
   </div>
 
-  <div id="sidebar" *ngIf="!exifEditMode; else exifEdit" class="uk-width-1-5">
-    <label for="latitude">Latitude: </label>
-    <p id="latitude">{{itemExifInfo | latitude}}</p>
-    <label for="longitude">Longitude: </label>
-    <p id="longitude">{{itemExifInfo | longitude}}</p>
-  </div>
-  <ng-template #exifEdit>
+  <div id="sidebar" class="uk-width-auto">
+    <div *ngIf="!exifEditMode; else exifEdit">
+      <label for="latitude">Latitude: </label>
+      <p id="latitude">{{itemExifInfo | latitude}}</p>
+      <label for="longitude">Longitude: </label>
+      <p id="longitude">{{itemExifInfo | longitude}}</p>
+    </div>
+    <ng-template #exifEdit>
 
-  </ng-template>
+    </ng-template>
+  </div>
 </div>

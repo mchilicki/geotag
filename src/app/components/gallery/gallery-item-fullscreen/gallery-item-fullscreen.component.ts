@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ExifGpsInfo} from "../../../models/exif-gps-info";
 import {ExifService} from "../../../services/exif/exif.service";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-gallery-item-fullscreen',

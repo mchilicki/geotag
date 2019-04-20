@@ -43,8 +43,10 @@ export class GalleryItemFullscreenComponent implements OnInit {
   private initForm() {
     this.createFormGroup();
     if (this.itemExifInfo) {
-      Math.abs(this.itemExifInfo.latitude)
-
+      this.latitudeValue = Math.abs(Number(this.itemExifInfo.latitude));
+      this.latitudeDirection = GalleryItemFullscreenComponent.resolveLatitudeDirection(Number(this.itemExifInfo.latitude));
+      this.longitudeValue = Math.abs(Number(this.itemExifInfo.longitude));
+      this.longitudeDirection = GalleryItemFullscreenComponent.resolveLongitudeDirection(Number(this.itemExifInfo.longitude));
     }
   }
 

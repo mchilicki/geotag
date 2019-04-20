@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
+import {ExifGpsInfo} from "../../../models/exif-gps-info";
+import {ExifService} from "../../../services/exif/exif.service";
 
 @Component({
   selector: 'app-gallery-item-fullscreen',
@@ -7,17 +9,28 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./gallery-item-fullscreen.component.scss']
 })
 export class GalleryItemFullscreenComponent implements OnInit {
-  path: string;
+  name: string;
+  itemExifInfo: ExifGpsInfo;
+  exifEditMode = false;
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(private route: ActivatedRoute, private exifService: ExifService,private router: Router) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.path = params['path'];
+      this.name = params['name'];
+      console.log(this.name);
+      if (this.exifService.hasExifGpsSection(this.name)) {
+        this.itemExifInfo = this.exifService.getExifGpsInfoFromImageFile(this.name);
+      } else {
+        this.itemExifInfo = null;
+      }
+      console.log(this.itemExifInfo);
     })
   }
 
   onBackButtonClick() {
     this.router.navigate(['']);
   }
+
+
 }

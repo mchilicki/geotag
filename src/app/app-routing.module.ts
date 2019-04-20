@@ -5,7 +5,7 @@ import {GalleryItemFullscreenComponent} from "./components/gallery/gallery-item-
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  {path: 'image/:path', component: GalleryItemFullscreenComponent}
+  {path: 'image/:name', component: GalleryItemFullscreenComponent}
 ];
 
 @NgModule({

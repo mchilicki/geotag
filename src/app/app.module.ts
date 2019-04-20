@@ -14,6 +14,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import {NgxImageCompressService} from 'ngx-image-compress';
 import {GalleryItemFullscreenComponent} from "./components/gallery/gallery-item-fullscreen/gallery-item-fullscreen.component";
 import {ExifService} from './services/exif/exif.service';
+import { LatitudePipe } from './shared/latitude.pipe';
+import { LongitudePipe } from './shared/longitude.pipe';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import {ExifService} from './services/exif/exif.service';
     GalleryItemComponent,
     BasenamePipe,
     SidebarComponent,
-    GalleryItemFullscreenComponent
+    GalleryItemFullscreenComponent,
+    LatitudePipe,
+    LongitudePipe
   ],
   imports: [
     BrowserModule,

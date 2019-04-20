@@ -16,7 +16,8 @@ export class GalleryComponent implements OnInit {
   ngOnInit() {
   }
 
-  onGalleryItemClicked(path: string) {
-    this.router.navigate(['image', path]);
+  onGalleryItemClicked(name: string) {
+    console.log(name);
+    this.router.navigate(['image', name]);
   }
 }

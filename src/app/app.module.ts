@@ -16,6 +16,7 @@ import {GalleryItemFullscreenComponent} from "./components/gallery/gallery-item-
 import {ExifService} from './services/exif/exif.service';
 import { LatitudePipe } from './shared/latitude.pipe';
 import { LongitudePipe } from './shared/longitude.pipe';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,9 @@ import { LongitudePipe } from './shared/longitude.pipe';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgxElectronModule
+    NgxElectronModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [CookieService, NgxImageCompressService, ExifService],
   bootstrap: [AppComponent]

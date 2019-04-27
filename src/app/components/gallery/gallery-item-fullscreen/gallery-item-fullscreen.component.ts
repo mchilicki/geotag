@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ExifGpsInfo} from "../../../models/exif-gps-info";
 import {ExifService} from "../../../services/exif/exif.service";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-gallery-item-fullscreen',
@@ -27,17 +27,21 @@ export class GalleryItemFullscreenComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.name = params['name'];
-      if (this.exifService.hasExifGpsSection(this.name)) {
-        this.itemExifInfo = this.exifService.getExifGpsInfoFromImageFile(this.name);
-      } else {
-        this.itemExifInfo = null;
-      }
+      this.initExifInfo();
       this.initForm();
     })
   }
 
   onBackButtonClick() {
     this.router.navigate(['']);
+  }
+
+  private initExifInfo() {
+    if (this.exifService.hasExifGpsSection(this.name)) {
+      this.itemExifInfo = this.exifService.getExifGpsInfoFromImageFile(this.name);
+    } else {
+      this.itemExifInfo = null;
+    }
   }
 
   private initForm() {
@@ -53,10 +57,10 @@ export class GalleryItemFullscreenComponent implements OnInit {
 
   private createFormGroup() {
     this.exifForm = new FormGroup({
-      'latitudeValue': new FormControl(this.latitudeValue),
-      'latitudeDirection': new FormControl(this.latitudeDirection),
-      'longitudeValue': new FormControl(this.longitudeValue),
-      'longitudeDirection': new FormControl(this.longitudeDirection)
+      'latitudeValue': new FormControl(this.latitudeValue, [Validators.required, Validators.min(0), Validators.max(90)]),
+      'latitudeDirection': new FormControl(this.latitudeDirection, Validators.required),
+      'longitudeValue': new FormControl(this.longitudeValue, [Validators.required, Validators.min(0), Validators.max(180)]),
+      'longitudeDirection': new FormControl(this.longitudeDirection, Validators.required)
     });
   }
 
@@ -69,6 +73,7 @@ export class GalleryItemFullscreenComponent implements OnInit {
     const longitude = GalleryItemFullscreenComponent.convertGeographicalCoordinateToNumber(this.exifForm.get('longitudeValue').value, this.exifForm.get('longitudeDirection').value)
     const exifGpsInfo : ExifGpsInfo = {latitude: latitude, longitude: longitude};
     this.exifService.setExifGpsOfImageFile(exifGpsInfo, this.name);
+    this.initExifInfo();
     this.onClose();
   }
 

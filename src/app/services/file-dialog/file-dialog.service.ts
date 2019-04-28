@@ -27,7 +27,7 @@ export class FileDialogService {
           { name: 'Images', extensions: IMAGE_EXTENSIONS }
         ]
       })
-      .map(file => `file:///${file}`);;
+      .map(file => `file:///${file}`);
 
     this.files = this.compressImages(this.filePaths); // .then(result => {
         // this.files = result;

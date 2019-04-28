@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from 'ngx-electron';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { FileInfo } from 'src/app/models/file-info';
 
@@ -13,7 +13,7 @@ export class FileDialogService {
   files: FileInfo[];
   filePaths: string[];
 
-  private subject = new Subject<FileInfo[]>();
+  private subject = new BehaviorSubject<FileInfo[]>(null);
   getFiles = this.subject.asObservable();
 
   constructor(private electronService: ElectronService,

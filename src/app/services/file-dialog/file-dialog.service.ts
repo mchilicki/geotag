@@ -20,19 +20,20 @@ export class FileDialogService {
               private imageCompress: NgxImageCompressService) { }
 
   loadImageFiles() {
-    this.filePaths = this.electronService.remote.dialog.showOpenDialog(
+    const filePaths = this.electronService.remote.dialog.showOpenDialog(
       {
         properties: ['openFile', 'multiSelections'],
         filters: [
           { name: 'Images', extensions: IMAGE_EXTENSIONS }
         ]
-      })
-      .map(file => `file:///${file}`);
+      });
 
-    this.files = this.compressImages(this.filePaths); // .then(result => {
-        // this.files = result;
-    this.subject.next(this.files);
-        // });
+    if (filePaths && filePaths.length > 0) {
+      this.filePaths = filePaths.map(file => `file:///${file}`);
+
+      this.files = this.compressImages(this.filePaths);
+      this.subject.next(this.files);
+    }
   }
 
   loadFilesFromDirectory() {
@@ -48,10 +49,8 @@ export class FileDialogService {
         .filter(file => IMAGE_EXTENSIONS.includes(path.extname(file).replace('.', '')))
         .map(file => `file:///${path.join(directory, file)}`);
 
-      this.files = this.compressImages(this.filePaths); // .then(result => {
-      // this.files = result;
+      this.files = this.compressImages(this.filePaths);
       this.subject.next(this.files);
-      // });
     }
   }
 

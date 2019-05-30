@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from 'ngx-electron';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { FileInfo } from 'src/app/models/file-info';
 
@@ -13,14 +13,14 @@ export class FileDialogService {
   files: FileInfo[];
   filePaths: string[];
 
-  private subject = new Subject<FileInfo[]>();
+  private subject = new BehaviorSubject<FileInfo[]>(null);
   getFiles = this.subject.asObservable();
 
   constructor(private electronService: ElectronService,
               private imageCompress: NgxImageCompressService) { }
 
   loadImageFiles() {
-    this.filePaths = this.electronService.remote.dialog.showOpenDialog(
+    const filePaths = this.electronService.remote.dialog.showOpenDialog(
       {
         properties: ['openFile', 'multiSelections'],
         filters: [
@@ -29,10 +29,12 @@ export class FileDialogService {
       })
       .map(file => `file:///${file}`);
 
-    this.files = this.compressImages(this.filePaths); // .then(result => {
-        // this.files = result;
-    this.subject.next(this.files);
-        // });
+    if (filePaths && filePaths.length > 0) {
+      this.filePaths = filePaths.map(file => `file:///${file}`);
+
+      this.files = this.compressImages(this.filePaths);
+      this.subject.next(this.files);
+    }
   }
 
   loadFilesFromDirectory() {
@@ -48,10 +50,8 @@ export class FileDialogService {
         .filter(file => IMAGE_EXTENSIONS.includes(path.extname(file).replace('.', '')))
         .map(file => `file:///${path.join(directory, file)}`);
 
-      this.files = this.compressImages(this.filePaths); // .then(result => {
-      // this.files = result;
+      this.files = this.compressImages(this.filePaths);
       this.subject.next(this.files);
-      // });
     }
   }
 

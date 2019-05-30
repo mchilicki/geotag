@@ -1,3 +1,5 @@
+import { MapComponent } from './components/map/map.component';
+import { GalleryListItemComponent } from './components/gallery/gallery-list-item/gallery-list-item.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -29,7 +31,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     SidebarComponent,
     GalleryItemFullscreenComponent,
     LatitudePipe,
-    LongitudePipe
+    LongitudePipe,
+    GalleryListItemComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,

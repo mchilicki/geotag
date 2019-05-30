@@ -10,7 +10,7 @@ import {Router} from "@angular/router";
 export class GalleryComponent implements OnInit {
 
   @Input() files: FileInfo[];
-
+  
   constructor(private router: Router) { }
 
   ngOnInit() {

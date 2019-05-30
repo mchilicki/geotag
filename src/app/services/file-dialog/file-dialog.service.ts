@@ -27,10 +27,10 @@ export class FileDialogService {
           { name: 'Images', extensions: IMAGE_EXTENSIONS }
         ]
       })
-      .map(file => `file:///${file}`);
+      .map(file => `${file}`);
 
     if (filePaths && filePaths.length > 0) {
-      this.filePaths = filePaths.map(file => `file:///${file}`);
+      this.filePaths = filePaths.map(file => `${file}`);
 
       this.files = this.compressImages(this.filePaths);
       this.subject.next(this.files);
@@ -48,7 +48,7 @@ export class FileDialogService {
       const directory = dirPaths[0];
       this.filePaths = fs.readdirSync(directory)
         .filter(file => IMAGE_EXTENSIONS.includes(path.extname(file).replace('.', '')))
-        .map(file => `file:///${path.join(directory, file)}`);
+        .map(file => `${path.join(directory, file)}`);
 
       this.files = this.compressImages(this.filePaths);
       this.subject.next(this.files);

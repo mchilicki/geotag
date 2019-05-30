@@ -1,0 +1,19 @@
+.image-card {
+    .image {
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img.thumbnail {
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+    .filename {
+        p {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    }
+}

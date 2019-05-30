@@ -12,7 +12,11 @@ import { BasenamePipe } from './shared/basename.pipe';
 import { CookieService } from 'ngx-cookie-service';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import {NgxImageCompressService} from 'ngx-image-compress';
+import {GalleryItemFullscreenComponent} from "./components/gallery/gallery-item-fullscreen/gallery-item-fullscreen.component";
 import {ExifService} from './services/exif/exif.service';
+import { LatitudePipe } from './shared/latitude.pipe';
+import { LongitudePipe } from './shared/longitude.pipe';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -22,12 +26,17 @@ import {ExifService} from './services/exif/exif.service';
     GalleryComponent,
     GalleryItemComponent,
     BasenamePipe,
-    SidebarComponent
+    SidebarComponent,
+    GalleryItemFullscreenComponent,
+    LatitudePipe,
+    LongitudePipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgxElectronModule
+    NgxElectronModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [CookieService, NgxImageCompressService, ExifService],
   bootstrap: [AppComponent]

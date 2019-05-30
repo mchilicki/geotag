@@ -1,0 +1,58 @@
+<div uk-grid uk-height-viewport="expand: true">
+  <div class="uk-width-expand@s">
+    <img data-src="{{name}}" uk-img>
+  </div>
+
+  <div id="sidebar" class="uk-width-auto uk-margin-small-left">
+    <div *ngIf="!exifEditMode; else exifEdit">
+      <label for="latitude">Latitude: </label>
+      <p id="latitude">{{itemExifInfo | latitude}}</p>
+      <label for="longitude">Longitude: </label>
+      <p id="longitude">{{itemExifInfo | longitude}}</p>
+      <button class="uk-button uk-button-default themable" uk-icon="icon: file-edit; ratio: 1.5"
+              (click)="editButtonClicked()">Edit
+      </button>
+      <button class="uk-button uk-button-default themable" uk-icon="icon: arrow-left; ratio: 1.5"
+              (click)="onBackButtonClick()">Back
+      </button>
+    </div>
+    <ng-template #exifEdit>
+      <form [formGroup]="exifForm" (ngSubmit)="onSubmit()">
+        <div>
+          <label for="latitudeValue">Latitude:</label>
+          <br>
+          <input type="number" id="latitudeValue" formControlName="latitudeValue" class="uk-input themable">
+          <br>
+          <select formControlName="latitudeDirection" class="uk-select themable">
+            <option value="E">East</option>
+            <option value="W">West</option>
+          </select>
+        </div>
+
+        <br>
+
+        <div>
+          <label for="longitudeValue">Longitude:</label>
+          <br>
+          <input type="number" id="longitudeValue" formControlName="longitudeValue" class="uk-input themable">
+          <br>
+          <select formControlName="longitudeDirection" class="uk-select themable">
+            <option value="N">North</option>
+            <option value="S">South</option>
+          </select>
+        </div>
+
+        <br>
+
+        <div>
+          <button type="submit" class="uk-button uk-button-default themable" uk-icon="icon: check; ratio: 1.5"
+                  [disabled]="!exifForm.valid" [ngClass]="{'disabled': !exifForm.valid}">Save
+          </button>
+          <button type="button" class="uk-button uk-button-default themable" uk-icon="icon: close; ratio: 1.5"
+                  (click)="onClose()">Close
+          </button>
+        </div>
+      </form>
+    </ng-template>
+  </div>
+</div>

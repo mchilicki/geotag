@@ -10,33 +10,43 @@ import { FileDialogService } from 'src/app/services/file-dialog/file-dialog.serv
 export class MapComponent implements OnInit {
   @Input() files: FileInfo[];
 
-  longitude = 19.029561;
-  latitude = 50.254831;
+  startLongitude = 19.029561;
+  startLatitude = 50.254831;
+  startZoom = 12;
+  mapContainerId = 'map';
   map: any;
+
+  //currentMarkers: ol.
 
   constructor(private fileService: FileDialogService) { }
 
   ngOnInit() {
-    this.fileService.getFiles.subscribe(
-      data => this.files = data);
     this.initializeMap();
+    this.fileService.getFiles.subscribe(
+      data => {
+        this.files = data;
+        this.redrawImageMarkers();
+      });
   }
 
-  initializeMap() {
+  private initializeMap() {
     this.map = new ol.Map({
-      target: 'map',
+      target: this.mapContainerId,
       layers: [
         new ol.layer.Tile({
           source: new ol.source.OSM()
         })
       ],
       view: new ol.View({
-        center: ol.proj.fromLonLat([this.longitude, this.latitude]),
-        zoom: 12
+        center: ol.proj.fromLonLat([this.startLongitude, this.startLatitude]),
+        zoom: this.startZoom
       })
     });
   }
 
+  private redrawImageMarkers() {
+
+  }
 }
 
 declare var ol: any;

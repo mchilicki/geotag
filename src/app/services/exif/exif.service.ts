@@ -1,3 +1,4 @@
+import { FileInfo } from './../../models/file-info';
 import {Injectable} from '@angular/core';
 import {ElectronService} from 'ngx-electron';
 import * as piexif from 'node_modules/piexifjs/piexif';
@@ -39,6 +40,19 @@ export class ExifService {
   }
 
   /*
+    Updates array of images (Array<FileInfo>) with exif coordinates.
+    If image doesn't have exif coordinates then it doesn't fill anything to it.
+  */
+  public getExifGpsInfoForImages(images: Array<FileInfo>): Array<FileInfo> {
+    for (const image of images) {
+      if (this.hasExifGpsSection(image.path)) {
+        image.coordinates = this.getExifGpsInfoFromImageFile(image.path);
+      }
+    }
+    return images;
+  }
+
+  /*
     Set or update (if exists) exif gps section of image file.
     As parameters takes latitude and longitude in ExifGpsInfo interface format
     and path to the image file.
@@ -58,7 +72,7 @@ export class ExifService {
     let base64Img: string = piexif.insert(exifBytes, 'data:image/jpeg;base64,' + imageAsBase64);
     base64Img = base64Img.substr(22); // Image file can't contain imageURI "header"
     this.updateImageFile(base64Img, imagePath);
-}
+  }
 
   private updateImageFile(data: string, imagePath: string) {
     const fs = this.electronService.remote.require('fs');

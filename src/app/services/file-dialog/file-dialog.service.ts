@@ -62,7 +62,8 @@ export class FileDialogService {
         result => {
           compressedImages.push({
             name: image,
-            path: result
+            path: result,
+            coordinates: null,
           });
         }
       );

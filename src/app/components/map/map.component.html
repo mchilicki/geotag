@@ -1,5 +1,10 @@
-<div class="uk-child-width-1-6 uk-text-left" uk-grid>
-  <app-gallery-list-item style="cursor: pointer" *ngFor="let file of files" [file]="file"></app-gallery-list-item>
+<div class="themable" uk-grid>
+  <div class="uk-container uk-width-auto uk-overflow-auto uk-height-max">
+    <app-gallery-list-item style="cursor: pointer" *ngFor="let file of files" [file]="file"></app-gallery-list-item>
+  </div>
+  <div class="uk-width-expand uk-height-max">
+    <div id="map" class="map"></div>
+  </div>
 </div>
-<div id="map" class="map"></div>
+
 

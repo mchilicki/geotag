@@ -3,6 +3,7 @@ import { FileInfo } from 'src/app/models/file-info';
 import { FileDialogService } from 'src/app/services/file-dialog/file-dialog.service';
 import { ExifGpsInfo } from 'src/app/models/exif-gps-info';
 import { ExifCoordinatesMapper } from 'src/app/services/mappers/ExifCoordinatesMapper';
+import { ExifService } from 'src/app/services/exif/exif.service';
 
 @Component({
   selector: 'app-map',
@@ -21,14 +22,15 @@ export class MapComponent implements OnInit {
   currentMarkers: Array<any> = [];
 
   constructor(private fileService: FileDialogService,
-              private coordinatesMapper: ExifCoordinatesMapper) { }
+              private coordinatesMapper: ExifCoordinatesMapper,
+              private exifService: ExifService) { }
 
   ngOnInit() {
     this.initializeMap();
     this.fileService.getFiles.subscribe(
       data => {
         this.files = data;
-        this.redrawImageMarkers();
+        this.redrawImageMarkers(this.files);
       });
   }
 
@@ -37,7 +39,7 @@ export class MapComponent implements OnInit {
       .map(this.mapContainerId)
       .setView([this.startLatitude, this.startLongitude], this.startZoom);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-        attribution: `Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, 
+        attribution: `Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors,
           <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>`,
         maxZoom: 18,
         id: 'mapbox.streets',
@@ -45,10 +47,14 @@ export class MapComponent implements OnInit {
     }).addTo(this.map);
   }
 
-  private redrawImageMarkers() {
-    this.drawMarker(this.coordinatesMapper.toExifGpsInfo(
-      { latitude: this.startLatitude, longitude: this.startLongitude})
-    );
+  private redrawImageMarkers(files: Array<FileInfo>) {
+    if (files) {
+      for (const file of files) {
+        if (this.exifService.hasExifGpsSection(file.path)) {
+          this.drawMarker(file.coordinates);
+        }
+      }
+    }
   }
 
   private drawMarker(coordinates: ExifGpsInfo) {

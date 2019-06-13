@@ -50,7 +50,7 @@ export class MapComponent implements OnInit {
   private redrawImageMarkers(files: Array<FileInfo>) {
     if (files) {
       for (const file of files) {
-        if (this.exifService.hasExifGpsSection(file.path)) {
+        if (this.exifService.hasExifGpsSection(file.name)) {
           this.drawMarker(file.coordinates);
         }
       }

@@ -26,8 +26,7 @@ export class FileDialogService {
         filters: [
           { name: 'Images', extensions: IMAGE_EXTENSIONS }
         ]
-      })
-      .map(file => `${file}`);
+      });
 
     if (filePaths && filePaths.length > 0) {
       this.filePaths = filePaths.map(file => `${file}`);

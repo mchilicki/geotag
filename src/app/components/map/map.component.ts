@@ -11,7 +11,7 @@ import { ExifService } from 'src/app/services/exif/exif.service';
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
-  @Input() files: FileInfo[];
+  files: FileInfo[];
 
   startLongitude = 19.029561;
   startLatitude = 50.254831;

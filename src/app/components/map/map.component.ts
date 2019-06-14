@@ -27,7 +27,7 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.initializeMap();
-    this.fileService.getFiles.subscribe(
+    this.fileService.uploadedFiles.subscribe(
       data => {
         this.files = data;
         this.redrawImageMarkers(this.files);

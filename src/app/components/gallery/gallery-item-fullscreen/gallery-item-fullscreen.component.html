@@ -1,6 +1,6 @@
 <div uk-grid uk-height-viewport="expand: true">
   <div class="uk-width-expand@s">
-    <img data-src="{{name}}" uk-img>
+    <img [src]="name | safe">
   </div>
 
   <div id="sidebar" class="uk-width-auto uk-margin-small-left">

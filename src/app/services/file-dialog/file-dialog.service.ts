@@ -14,7 +14,7 @@ export class FileDialogService {
   filePaths: string[];
 
   private subject = new BehaviorSubject<FileInfo[]>(null);
-  getFiles = this.subject.asObservable();
+  uploadedFiles = this.subject.asObservable();
 
   constructor(private electronService: ElectronService,
               private imageCompress: NgxImageCompressService) { }

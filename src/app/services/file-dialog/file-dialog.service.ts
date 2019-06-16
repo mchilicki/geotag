@@ -3,6 +3,7 @@ import { ElectronService } from 'ngx-electron';
 import { BehaviorSubject } from 'rxjs';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { FileInfo } from 'src/app/models/file-info';
+import { ExifService } from '../exif/exif.service';
 
 const IMAGE_EXTENSIONS = ['jpg', 'png', 'gif'];
 
@@ -17,7 +18,8 @@ export class FileDialogService {
   uploadedFiles = this.subject.asObservable();
 
   constructor(private electronService: ElectronService,
-              private imageCompress: NgxImageCompressService) { }
+              private imageCompress: NgxImageCompressService,
+              private exifService: ExifService) { }
 
   loadImageFiles() {
     const filePaths = this.electronService.remote.dialog.showOpenDialog(
@@ -32,6 +34,7 @@ export class FileDialogService {
       this.filePaths = filePaths.map(file => `${file}`);
 
       this.files = this.compressImages(this.filePaths);
+      this.files = this.exifService.getExifGpsInfoForImages(this.files);
       this.subject.next(this.files);
     }
   }
@@ -50,6 +53,7 @@ export class FileDialogService {
         .map(file => `${path.join(directory, file)}`);
 
       this.files = this.compressImages(this.filePaths);
+      this.files = this.exifService.getExifGpsInfoForImages(this.files);
       this.subject.next(this.files);
     }
   }
@@ -67,7 +71,6 @@ export class FileDialogService {
         }
       );
     });
-
     return compressedImages;
   }
 }

@@ -5,7 +5,7 @@ import { NgxImageCompressService } from 'ngx-image-compress';
 import { FileInfo } from 'src/app/models/file-info';
 import { ExifService } from '../exif/exif.service';
 
-const IMAGE_EXTENSIONS = ['jpg', 'png', 'gif'];
+const IMAGE_EXTENSIONS = ['jpg', 'tif'];
 
 @Injectable({
   providedIn: 'root'

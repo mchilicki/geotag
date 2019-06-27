@@ -18,8 +18,8 @@ export class FileDialogService {
   uploadedFiles = this.subject.asObservable();
 
   constructor(private electronService: ElectronService,
-              private imageCompress: NgxImageCompressService,
-              private exifService: ExifService) { }
+    private imageCompress: NgxImageCompressService,
+    private exifService: ExifService) { }
 
   loadImageFiles() {
     const filePaths = this.electronService.remote.dialog.showOpenDialog(
@@ -33,9 +33,10 @@ export class FileDialogService {
     if (filePaths && filePaths.length > 0) {
       this.filePaths = filePaths.map(file => `${file}`);
 
-      this.files = this.compressImages(this.filePaths);
-      this.files = this.exifService.getExifGpsInfoForImages(this.files);
-      this.subject.next(this.files);
+      this.compressImages(this.filePaths).then(data => {
+        this.files = this.exifService.getExifGpsInfoForImages(data);
+        this.subject.next(this.files);
+      });
     }
   }
 
@@ -52,25 +53,23 @@ export class FileDialogService {
         .filter(file => IMAGE_EXTENSIONS.includes(path.extname(file).replace('.', '')))
         .map(file => `${path.join(directory, file)}`);
 
-      this.files = this.compressImages(this.filePaths);
-      this.files = this.exifService.getExifGpsInfoForImages(this.files);
-      this.subject.next(this.files);
+      this.compressImages(this.filePaths).then(data => {
+        this.files = this.exifService.getExifGpsInfoForImages(data);
+        this.subject.next(this.files);
+      });
     }
   }
 
-  compressImages(images: string[]): FileInfo[] {
+  async compressImages(images: string[]): Promise<FileInfo[]> {
     const compressedImages: FileInfo[] = [];
-    images.forEach(async image => {
-      await this.imageCompress.compressFile(image, 1, 30, 30).then(
-        result => {
-          compressedImages.push({
-            name: image,
-            path: result,
-            coordinates: null,
-          });
-        }
-      );
-    });
+    for (const image of images) {
+      const compressedImage = await this.imageCompress.compressFile(image, 1, 30, 30);
+      compressedImages.push({
+        name: image,
+        path: compressedImage,
+        coordinates: null,
+      });
+    }
     return compressedImages;
   }
 }

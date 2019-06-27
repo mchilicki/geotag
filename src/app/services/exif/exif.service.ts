@@ -45,8 +45,8 @@ export class ExifService {
   */
   public getExifGpsInfoForImages(images: Array<FileInfo>): Array<FileInfo> {
     for (const image of images) {
-      if (this.hasExifGpsSection(image.path)) {
-        image.coordinates = this.getExifGpsInfoFromImageFile(image.path);
+      if (this.hasExifGpsSection(image.name)) {
+        image.coordinates = this.getExifGpsInfoFromImageFile(image.name);
       }
     }
     return images;

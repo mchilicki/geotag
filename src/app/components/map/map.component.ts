@@ -51,7 +51,8 @@ export class MapComponent implements OnInit {
     if (files) {
       for (const file of files) {
         if (this.exifService.hasExifGpsSection(file.name)) {
-          this.drawMarker(file.coordinates);
+          const coordinates = this.exifService.getExifGpsInfoFromImageFile(file.name);
+          this.drawMarker(coordinates);
         }
       }
     }

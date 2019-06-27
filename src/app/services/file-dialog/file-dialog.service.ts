@@ -18,8 +18,8 @@ export class FileDialogService {
   uploadedFiles = this.subject.asObservable();
 
   constructor(private electronService: ElectronService,
-    private imageCompress: NgxImageCompressService,
-    private exifService: ExifService) { }
+              private imageCompress: NgxImageCompressService,
+              private exifService: ExifService) { }
 
   loadImageFiles() {
     const filePaths = this.electronService.remote.dialog.showOpenDialog(

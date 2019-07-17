@@ -1,7 +1,6 @@
-<!-- <div class="image-card uk-card uk-card-default uk-card-hover"> -->
 <div class="image-card themable uk-card uk-card-default">
   <div class="image uk-card-media-top">    
-    <img class="thumbnail" [src]="file.path | safe" [title]="file.name | basename" (load)="loaded = true" [hidden]="!loaded">
+    <img class="thumbnail" [src]="file.path | safe" [title]="file.name | basename" [id]="file.name" (load)="loaded = true" [hidden]="!loaded">
     <img class="thumbnail preloader" src="assets/img/preloader.svg" [hidden]="loaded">
     <div class="filename">
       <p>{{file.name | basename}}</p>

@@ -59,12 +59,13 @@ export class MapComponent implements OnInit {
       event.preventDefault();
       const imagePath = event.dataTransfer.getData('text/plain');
       const coordinates = this.map.containerPointToLatLng(L.point([event.layerX, event.layerY]));
+      this.updateExifGpsInfo(coordinates);
       L.marker(coordinates,
         {
           icon: L.icon(
             {
               iconUrl: imagePath,
-              iconSize: [this.draggedFileDiv.offsetWidth, this.draggedFileDiv.offetHeight],
+              iconSize: [this.draggedFileDiv.offsetWidth, this.draggedFileDiv.offsetHeight],
             }),
           draggable: true
         }).addTo(this.map);
@@ -72,6 +73,15 @@ export class MapComponent implements OnInit {
     document.addEventListener('dragstart', (event) => {
       this.draggedFileDiv = event.target;
     }, false);
+  }
+
+  private updateExifGpsInfo(latLng) {
+    const coordinates: ExifGpsInfo = {
+      latitude: latLng.lat,
+      longitude: latLng.lng,
+    };
+    const draggedFileName = this.draggedFileDiv.id;
+    this.exifService.setExifGpsOfImageFile(coordinates, draggedFileName);
   }
 
   private redrawImageMarkers(files: Array<FileInfo>) {

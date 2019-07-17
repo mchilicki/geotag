@@ -4,6 +4,7 @@ import { FileDialogService } from 'src/app/services/file-dialog/file-dialog.serv
 import { ExifGpsInfo } from 'src/app/models/exif-gps-info';
 import { ExifCoordinatesMapper } from 'src/app/services/mappers/ExifCoordinatesMapper';
 import { ExifService } from 'src/app/services/exif/exif.service';
+import { LatLng } from 'src/app/models/latLng';
 
 @Component({
   selector: 'app-map',
@@ -32,6 +33,7 @@ export class MapComponent implements OnInit {
     this.fileService.uploadedFiles.subscribe(
       data => {
         this.files = data;
+        this.removeAllMarkers();
         this.redrawImageMarkers(this.files);
       });
   }
@@ -57,29 +59,18 @@ export class MapComponent implements OnInit {
     };
     mapDiv.ondrop = (event) => {
       event.preventDefault();
-      const imagePath = event.dataTransfer.getData('text/plain');
-      const coordinates = this.map.containerPointToLatLng(L.point([event.layerX, event.layerY]));
-      this.updateExifGpsInfo(coordinates);
-      L.marker(coordinates,
-        {
-          icon: L.icon(
-            {
-              iconUrl: imagePath,
-              iconSize: [this.draggedFileDiv.offsetWidth, this.draggedFileDiv.offsetHeight],
-            }),
-          draggable: true
-        }).addTo(this.map);
+      const imagePath: string = event.dataTransfer.getData('text/plain');
+      const latLng: LatLng = this.map.containerPointToLatLng(L.point([event.layerX, event.layerY]));
+      this.updateExifGpsInfo(latLng);
+      this.drawMarker(imagePath, latLng, [this.draggedFileDiv.offsetWidth, this.draggedFileDiv.offsetHeight]);
     };
     document.addEventListener('dragstart', (event) => {
       this.draggedFileDiv = event.target;
     }, false);
   }
 
-  private updateExifGpsInfo(latLng) {
-    const coordinates: ExifGpsInfo = {
-      latitude: latLng.lat,
-      longitude: latLng.lng,
-    };
+  private updateExifGpsInfo(latLng: LatLng) {
+    const coordinates: ExifGpsInfo = this.coordinatesMapper.toExifGpsInfo(latLng);
     const draggedFileName = this.draggedFileDiv.id;
     this.exifService.setExifGpsOfImageFile(coordinates, draggedFileName);
   }
@@ -88,17 +79,34 @@ export class MapComponent implements OnInit {
     if (files) {
       for (const file of files) {
         if (this.exifService.hasExifGpsSection(file.name)) {
-          const coordinates = this.exifService.getExifGpsInfoFromImageFile(file.name);
-          this.drawMarker(coordinates);
+          const coordinates: ExifGpsInfo = this.exifService.getExifGpsInfoFromImageFile(file.name);
+          const latLng: LatLng = this.coordinatesMapper.toLatLng(coordinates);
+          const imageDiv: HTMLImageElement = document.querySelector('[title="' + file.shortName + '"]');
+          this.drawMarker(file.name, latLng, [30, 30]);
         }
       }
     }
   }
 
-  private drawMarker(coordinates: ExifGpsInfo) {
-    const marker = L
-      .marker([coordinates.latitude, coordinates.longitude])
-      .addTo(this.map);
+  private removeAllMarkers() {
+    if (this.currentMarkers) {
+      for (const marker of this.currentMarkers) {
+        this.map.removeLayer(marker);
+      }
+    }
+  }
+
+  private drawMarker(iconUrl: string, coordinates: LatLng, iconSize: Array<number>) {
+    const marker = L.marker(coordinates,
+      {
+        icon: L.icon(
+          {
+            iconUrl,
+            iconSize,
+          }),
+        draggable: true
+      }).addTo(this.map);
+    this.map.addLayer(marker);
     this.currentMarkers.push(marker);
   }
 }

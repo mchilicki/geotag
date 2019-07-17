@@ -19,6 +19,7 @@ import {ExifService} from './services/exif/exif.service';
 import { LatitudePipe } from './shared/latitude.pipe';
 import { LongitudePipe } from './shared/longitude.pipe';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { ExifCoordinatesMapper } from './services/mappers/ExifCoordinatesMapper';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     LatitudePipe,
     LongitudePipe,
     GalleryListItemComponent,
-    MapComponent
+    MapComponent,
   ],
   imports: [
     BrowserModule,

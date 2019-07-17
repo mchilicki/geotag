@@ -1,22 +1,26 @@
-import { Coordinates } from 'src/app/models/coordinates';
 import { ExifGpsInfo } from 'src/app/models/exif-gps-info';
 import { Injectable } from '@angular/core';
+import { LatLng } from 'src/app/models/latLng';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ExifCoordinatesMapper {
-    public toExifGpsInfo(coordinates: Coordinates): ExifGpsInfo {
+    constructor() {
+
+    }
+
+    public toLatLng(coordinates: ExifGpsInfo): LatLng {
         return {
-            longitude: this.toString(coordinates.longitude),
-            latitude: this.toString(coordinates.latitude),
+            lat: this.toNumber(coordinates.latitude),
+            lng: this.toNumber(coordinates.longitude),
         };
     }
 
-    public toCoordinates(gpsInfo: ExifGpsInfo): Coordinates {
+    public toExifGpsInfo(coordinates: LatLng): ExifGpsInfo {
         return {
-            longitude: this.toNumber(gpsInfo.longitude),
-            latitude: this.toNumber(gpsInfo.latitude),
+            latitude: this.toString(coordinates.lat),
+            longitude: this.toString(coordinates.lng),
         };
     }
 

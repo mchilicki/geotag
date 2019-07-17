@@ -60,16 +60,21 @@ export class FileDialogService {
     }
   }
 
-  async compressImages(images: string[]): Promise<FileInfo[]> {
+  async compressImages(filePaths: string[]): Promise<FileInfo[]> {
     const compressedImages: FileInfo[] = [];
-    for (const image of images) {
-      const compressedImage = await this.imageCompress.compressFile(image, 1, 30, 30);
+    for (const filePath of filePaths) {
+      const compressedImage = await this.imageCompress.compressFile(filePath, 1, 30, 30);
       compressedImages.push({
-        name: image,
+        name: filePath,
         path: compressedImage,
+        shortName: this.takeOnlyNameFromFilePath(filePath),
         coordinates: null,
       });
     }
     return compressedImages;
+  }
+
+  private takeOnlyNameFromFilePath(imagePath: string): string {
+      return imagePath.split('\\').pop().split('/').pop();
   }
 }

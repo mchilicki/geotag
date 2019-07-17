@@ -106,6 +106,10 @@ export class MapComponent implements OnInit {
           }),
         draggable: true
       }).addTo(this.map);
+    marker.on('dragend', (e) => {
+      const latLng: LatLng = marker.getLatLng();
+      this.updateExifGpsInfo(latLng);
+    });
     this.map.addLayer(marker);
     this.currentMarkers.push(marker);
   }

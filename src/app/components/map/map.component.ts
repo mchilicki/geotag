@@ -18,6 +18,7 @@ export class MapComponent implements OnInit {
   startZoom = 12;
   mapContainerId = 'map';
   map: any;
+  draggedFileDiv: any;
 
   currentMarkers: Array<any> = [];
 
@@ -27,6 +28,7 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.initializeMap();
+    this.initializeDragAndDrop();
     this.fileService.uploadedFiles.subscribe(
       data => {
         this.files = data;
@@ -45,6 +47,31 @@ export class MapComponent implements OnInit {
         id: 'mapbox.streets',
         accessToken: 'pk.eyJ1Ijoia2lwaWM5NiIsImEiOiJjandob3M1b2owMjZvNDVuNmkxZnkzdGgxIn0.tYO090kjAYA-Ge6Dpb-69w'
     }).addTo(this.map);
+  }
+
+  private initializeDragAndDrop() {
+    const mapDiv = document.getElementById(this.mapContainerId);
+    mapDiv.ondragover = (event) => {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'move';
+    };
+    mapDiv.ondrop = (event) => {
+      event.preventDefault();
+      const imagePath = event.dataTransfer.getData('text/plain');
+      const coordinates = this.map.containerPointToLatLng(L.point([event.layerX, event.layerY]));
+      L.marker(coordinates,
+        {
+          icon: L.icon(
+            {
+              iconUrl: imagePath,
+              iconSize: [this.draggedFileDiv.offsetWidth, this.draggedFileDiv.offetHeight],
+            }),
+          draggable: true
+        }).addTo(this.map);
+    };
+    document.addEventListener('dragstart', (event) => {
+      this.draggedFileDiv = event.target;
+    }, false);
   }
 
   private redrawImageMarkers(files: Array<FileInfo>) {

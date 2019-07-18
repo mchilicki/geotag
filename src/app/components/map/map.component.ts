@@ -61,7 +61,8 @@ export class MapComponent implements OnInit {
       event.preventDefault();
       const imagePath: string = event.dataTransfer.getData('text/plain');
       const latLng: LatLng = this.map.containerPointToLatLng(L.point([event.layerX, event.layerY]));
-      this.updateExifGpsInfo(latLng);
+      const draggedFilePath = this.draggedFileDiv.id;
+      this.updateExifGpsInfo(latLng, draggedFilePath);
       this.drawMarker(imagePath, latLng, [this.draggedFileDiv.offsetWidth, this.draggedFileDiv.offsetHeight]);
     };
     document.addEventListener('dragstart', (event) => {
@@ -69,10 +70,9 @@ export class MapComponent implements OnInit {
     }, false);
   }
 
-  private updateExifGpsInfo(latLng: LatLng) {
+  private updateExifGpsInfo(latLng: LatLng, filePath: string) {
     const coordinates: ExifGpsInfo = this.coordinatesMapper.toExifGpsInfo(latLng);
-    const draggedFileName = this.draggedFileDiv.id;
-    this.exifService.setExifGpsOfImageFile(coordinates, draggedFileName);
+    this.exifService.setExifGpsOfImageFile(coordinates, filePath);
   }
 
   private redrawImageMarkers(files: Array<FileInfo>) {
@@ -82,7 +82,7 @@ export class MapComponent implements OnInit {
           const coordinates: ExifGpsInfo = this.exifService.getExifGpsInfoFromImageFile(file.name);
           const latLng: LatLng = this.coordinatesMapper.toLatLng(coordinates);
           const imageDiv: HTMLImageElement = document.querySelector('[title="' + file.shortName + '"]');
-          this.drawMarker(file.name, latLng, [30, 30]);
+          this.drawMarker(file.name, latLng, [50, 50]);
         }
       }
     }
@@ -96,19 +96,19 @@ export class MapComponent implements OnInit {
     }
   }
 
-  private drawMarker(iconUrl: string, coordinates: LatLng, iconSize: Array<number>) {
+  private drawMarker(filePath: string, coordinates: LatLng, iconSize: Array<number>) {
     const marker = L.marker(coordinates,
       {
         icon: L.icon(
           {
-            iconUrl,
-            iconSize,
+            iconUrl: filePath,
           }),
         draggable: true
       }).addTo(this.map);
-    marker.on('dragend', (e) => {
+    L.DomUtil.addClass(marker._icon, 'marker-image');
+    marker.on('dragend', (event) => {
       const latLng: LatLng = marker.getLatLng();
-      this.updateExifGpsInfo(latLng);
+      this.updateExifGpsInfo(latLng, filePath);
     });
     this.map.addLayer(marker);
     this.currentMarkers.push(marker);

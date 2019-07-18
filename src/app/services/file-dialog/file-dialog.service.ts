@@ -64,12 +64,13 @@ export class FileDialogService {
     const compressedImages: FileInfo[] = [];
     for (const filePath of filePaths) {
       const compressedImage = await this.imageCompress.compressFile(filePath, 1, 30, 30);
-      compressedImages.push({
+      const compressedFileInfo: FileInfo = {
         name: filePath,
         path: compressedImage,
         shortName: this.takeOnlyNameFromFilePath(filePath),
         coordinates: null,
-      });
+      };
+      compressedImages.push(compressedFileInfo);
     }
     return compressedImages;
   }

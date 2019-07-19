@@ -75,7 +75,7 @@ export class FileDialogService {
     return compressedImages;
   }
 
-  private takeOnlyNameFromFilePath(imagePath: string): string {
+  public takeOnlyNameFromFilePath(imagePath: string): string {
       return imagePath.split('\\').pop().split('/').pop();
   }
 }

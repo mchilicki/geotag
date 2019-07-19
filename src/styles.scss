@@ -84,3 +84,21 @@
         }
     }
 }
+
+.marker-image {
+    height: 50px !important;
+    max-height: 50px !important;
+    max-width: 50px !important;           
+}
+
+.leaflet-popup-content-wrapper {
+    @extend .themable
+}
+
+.leaflet-popup-content-wrapper .leaflet-popup-content {
+    @extend .themable
+}
+
+.leaflet-popup-tip-container {
+    @extend .themable
+}

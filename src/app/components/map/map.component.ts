@@ -62,8 +62,9 @@ export class MapComponent implements OnInit {
       const imagePath: string = event.dataTransfer.getData('text/plain');
       const latLng: LatLng = this.map.containerPointToLatLng(L.point([event.layerX, event.layerY]));
       const draggedFilePath = this.draggedFileDiv.id;
+      const draggedShortFilePath = this.fileService.takeOnlyNameFromFilePath(draggedFilePath);
       this.updateExifGpsInfo(latLng, draggedFilePath);
-      this.drawMarker(imagePath, latLng, [this.draggedFileDiv.offsetWidth, this.draggedFileDiv.offsetHeight]);
+      this.drawMarker(imagePath, draggedShortFilePath, latLng);
     };
     document.addEventListener('dragstart', (event) => {
       this.draggedFileDiv = event.target;
@@ -81,8 +82,7 @@ export class MapComponent implements OnInit {
         if (this.exifService.hasExifGpsSection(file.name)) {
           const coordinates: ExifGpsInfo = this.exifService.getExifGpsInfoFromImageFile(file.name);
           const latLng: LatLng = this.coordinatesMapper.toLatLng(coordinates);
-          const imageDiv: HTMLImageElement = document.querySelector('[title="' + file.shortName + '"]');
-          this.drawMarker(file.name, latLng, [50, 50]);
+          this.drawMarker(file.name, file.shortName, latLng);
         }
       }
     }
@@ -96,7 +96,7 @@ export class MapComponent implements OnInit {
     }
   }
 
-  private drawMarker(filePath: string, coordinates: LatLng, iconSize: Array<number>) {
+  private drawMarker(filePath: string, fileShortName: string, coordinates: LatLng) {
     const marker = L.marker(coordinates,
       {
         icon: L.icon(
@@ -104,7 +104,9 @@ export class MapComponent implements OnInit {
             iconUrl: filePath,
           }),
         draggable: true
-      }).addTo(this.map);
+      })
+      .addTo(this.map)
+      .bindPopup(fileShortName, { className: 'themable' });
     L.DomUtil.addClass(marker._icon, 'marker-image');
     marker.on('dragend', (event) => {
       const latLng: LatLng = marker.getLatLng();

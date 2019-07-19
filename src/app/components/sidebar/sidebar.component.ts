@@ -41,5 +41,7 @@ export class SidebarComponent implements OnInit {
 
   goToGallery() {
     this.router.navigate(['']);
+    document.getElementById('saving').style.display = 'none';
+    document.getElementById('allSaved').style.display = 'none';
   }
 }

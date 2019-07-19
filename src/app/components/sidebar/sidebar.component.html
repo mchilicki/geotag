@@ -7,6 +7,16 @@
         </button>
       </div>
     </div>
+    <div id="allSaved" class="uk-navbar-left" style="display: none;">
+      <div class="uk-navbar-item">
+        All changes saved
+      </div>
+    </div>
+    <div id="saving" class="uk-navbar-left" style="display: none;">
+      <div class="uk-navbar-item">
+        Saving...
+      </div>
+    </div>
     <div class="uk-navbar-right">
       <div class="uk-navbar-item">
         <div class="toggle" [ngClass]="(darkMode)?'on':'off'" (click)="toggleThemeMode()"></div>

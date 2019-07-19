@@ -98,16 +98,20 @@ export class MapComponent implements OnInit {
         this.map.removeLayer(marker);
       }
     }
+    this.currentMarkers.length = 0;
   }
 
   private removeMarkerByName(markerName: string) {
+    const markersToRemove = [];
     if (this.currentMarkers) {
       for (const marker of this.currentMarkers) {
         if (marker.options.name === markerName) {
           this.map.removeLayer(marker);
+          markersToRemove.push(markerName);
         }
       }
     }
+    this.currentMarkers.filter((currentMarker) => currentMarker.options.name === markersToRemove);
   }
 
   private drawMarker(filePath: string, fileShortName: string, coordinates: LatLng) {

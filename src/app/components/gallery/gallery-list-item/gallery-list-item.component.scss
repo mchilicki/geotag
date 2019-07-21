@@ -1,21 +1,37 @@
 .image-card {
+    padding: 5px;
+    cursor: -webkit-grab;
+
+    &:active {
+        cursor: -webkit-grabbing;
+    }
+
+    &:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+
     .image {
-        height: 50px;
+        float: left;
+        height: 70px;
+        width: 80px;
         display: flex;
         align-items: center;
-        padding: 5px 5px 10px 0px;
+
         img.thumbnail {
             height: 100%;
-            object-fit: cover;            
-        }     
-        .filename {
-            p {
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: nowrap;
-                align-items: center;
-                padding: 5px;
-            }
-        }    
-    }      
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+
+    p {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        align-items: center;
+        padding: 5px;
+        user-select: none;
+    }
 }

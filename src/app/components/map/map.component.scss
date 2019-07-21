@@ -1,5 +1,13 @@
-.map {
-    width: 100%;
-    height: 100vh;
-}
+#map-grid {
+    height: calc(100vh - 80px);
 
+    #map-gallery-list {
+        padding-left: 60px;
+        padding-right: 10px;
+    }
+
+    .map {
+        width: 100%;
+        height: 100%;
+    }
+}

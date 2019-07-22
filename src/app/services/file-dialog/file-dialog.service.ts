@@ -76,6 +76,9 @@ export class FileDialogService {
   }
 
   public takeOnlyNameFromFilePath(imagePath: string): string {
+    if (typeof imagePath !== 'undefined') {
       return imagePath.split('\\').pop().split('/').pop();
+    }
+    return null;
   }
 }

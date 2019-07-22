@@ -59,11 +59,15 @@ export class MapComponent implements OnInit {
       event.dataTransfer.dropEffect = 'move';
     };
     mapDiv.ondrop = (event) => {
+      const draggedFilePath = this.draggedFileDiv.id;
+      const draggedShortFilePath = this.fileService.takeOnlyNameFromFilePath(draggedFilePath);
+      if (typeof draggedFilePath === 'undefined' || draggedFilePath === draggedShortFilePath) {
+        this.hideSavingChangesComunicate();
+        return;
+      }
       this.showSavingChangesComunicate();
       event.preventDefault();
       const latLng: LatLng = this.map.containerPointToLatLng(L.point([event.layerX, event.layerY]));
-      const draggedFilePath = this.draggedFileDiv.id;
-      const draggedShortFilePath = this.fileService.takeOnlyNameFromFilePath(draggedFilePath);
       this.updateExifGpsInfo(latLng, draggedFilePath);
       this.removeMarkerByName(draggedFilePath);
       this.drawMarker(draggedFilePath, draggedShortFilePath, latLng);

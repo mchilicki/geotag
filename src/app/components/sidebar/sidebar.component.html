@@ -7,6 +7,16 @@
         </button>
       </div>
     </div>
+    <div id="allSaved" class="uk-navbar-left" style="display: none;">
+      <div class="uk-navbar-item">
+        All changes saved
+      </div>
+    </div>
+    <div id="saving" class="uk-navbar-left" style="display: none;">
+      <div class="uk-navbar-item">
+        Saving...
+      </div>
+    </div>
     <div class="uk-navbar-right">
       <div class="uk-navbar-item">
         <div class="toggle" [ngClass]="(darkMode)?'on':'off'" (click)="toggleThemeMode()"></div>
@@ -17,12 +27,12 @@
 
 
 <div id="sidebar" uk-offcanvas="mode: reveal; overlay: true; container: false">
-  <div class="uk-offcanvas-bar uk-flex uk-flex-column themable">
+  <div class="uk-offcanvas-bar uk-flex uk-flex-column themable">  
     <ul class="uk-nav uk-nav-primary uk-margin-auto-vertical">
       <li class="uk-nav-header uk-nav-center menu-group-header">Upload</li>
       <li>
         <a (click)="openFileDialog()">
-          <span class="uk-margin-small-right primary" uk-icon="icon: image"></span> Files
+          <span class="uk-margin-small-right primary" uk-icon="icon: copy"></span> Files
         </a>
       </li>
       <li>
@@ -30,6 +40,17 @@
           <span class="uk-margin-small-right primary" uk-icon="icon: folder"></span> Directory
         </a>
       </li>
-    </ul>
+      <li class="uk-nav-header uk-nav-center menu-group-header">Manage</li>
+      <li>
+        <a (click)="goToGallery()">
+          <span class="uk-margin-small-right primary" uk-icon="icon: grid"></span> Gallery
+        </a>
+      </li>
+      <li>
+        <a (click)="goToMap()">
+          <span class="uk-margin-small-right primary" uk-icon="icon: location"></span> Map
+        </a>
+      </li>
+    </ul> 
   </div>
 </div>

@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   constructor(private fileService: FileDialogService) { }
 
   ngOnInit() {
-    this.fileService.getFiles.subscribe(
+    this.fileService.uploadedFiles.subscribe(
       data => this.files = data);
   }
 }

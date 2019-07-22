@@ -1,0 +1,28 @@
+<div id="map-grid" class="themable" uk-grid>
+  <div
+    id="map-gallery-list"
+    class="uk-container uk-visible@m uk-width-1-3@m uk-overflow-auto uk-height-max"
+  >
+    <div *ngIf="files; else noFiles">
+      <app-gallery-list-item
+        *ngFor="let file of files"
+        [file]="file"
+      ></app-gallery-list-item>
+    </div>
+    <ng-template #noFiles>
+      <div class="uk-flex uk-flex-center uk-flex-middle uk-text-center" uk-height-viewport="offset-top: true">
+        <div>
+          <span uk-icon="icon: album; ratio: 4" class="primary"></span>
+          <p>No images loaded yet</p>
+          <p>
+            <span uk-icon="chevron-left"></span> Use
+            <strong>Upload</strong> options in the menu bar
+          </p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <div class="uk-width-expand uk-height-max">
+    <div id="map" class="map"></div>
+  </div>
+</div>

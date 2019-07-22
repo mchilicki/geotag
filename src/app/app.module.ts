@@ -1,3 +1,5 @@
+import { MapComponent } from './components/map/map.component';
+import { GalleryListItemComponent } from './components/gallery/gallery-list-item/gallery-list-item.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -17,6 +19,7 @@ import {ExifService} from './services/exif/exif.service';
 import { LatitudePipe } from './shared/latitude.pipe';
 import { LongitudePipe } from './shared/longitude.pipe';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { ExifCoordinatesMapper } from './services/mappers/ExifCoordinatesMapper';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,9 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     SidebarComponent,
     GalleryItemFullscreenComponent,
     LatitudePipe,
-    LongitudePipe
+    LongitudePipe,
+    GalleryListItemComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,

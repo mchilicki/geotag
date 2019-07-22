@@ -3,8 +3,9 @@ import { ElectronService } from 'ngx-electron';
 import { BehaviorSubject } from 'rxjs';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { FileInfo } from 'src/app/models/file-info';
+import { ExifService } from '../exif/exif.service';
 
-const IMAGE_EXTENSIONS = ['jpg', 'png', 'gif'];
+const IMAGE_EXTENSIONS = ['jpg', 'tif'];
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,11 @@ export class FileDialogService {
   filePaths: string[];
 
   private subject = new BehaviorSubject<FileInfo[]>(null);
-  getFiles = this.subject.asObservable();
+  uploadedFiles = this.subject.asObservable();
 
   constructor(private electronService: ElectronService,
-              private imageCompress: NgxImageCompressService) { }
+              private imageCompress: NgxImageCompressService,
+              private exifService: ExifService) { }
 
   loadImageFiles() {
     const filePaths = this.electronService.remote.dialog.showOpenDialog(
@@ -26,14 +28,15 @@ export class FileDialogService {
         filters: [
           { name: 'Images', extensions: IMAGE_EXTENSIONS }
         ]
-      })
-      .map(file => `file:///${file}`);
+      });
 
     if (filePaths && filePaths.length > 0) {
-      this.filePaths = filePaths.map(file => `file:///${file}`);
+      this.filePaths = filePaths.map(file => `${file}`);
 
-      this.files = this.compressImages(this.filePaths);
-      this.subject.next(this.files);
+      this.compressImages(this.filePaths).then(data => {
+        this.files = this.exifService.getExifGpsInfoForImages(data);
+        this.subject.next(this.files);
+      });
     }
   }
 
@@ -48,26 +51,34 @@ export class FileDialogService {
       const directory = dirPaths[0];
       this.filePaths = fs.readdirSync(directory)
         .filter(file => IMAGE_EXTENSIONS.includes(path.extname(file).replace('.', '')))
-        .map(file => `file:///${path.join(directory, file)}`);
+        .map(file => `${path.join(directory, file)}`);
 
-      this.files = this.compressImages(this.filePaths);
-      this.subject.next(this.files);
+      this.compressImages(this.filePaths).then(data => {
+        this.files = this.exifService.getExifGpsInfoForImages(data);
+        this.subject.next(this.files);
+      });
     }
   }
 
-  compressImages(images: string[]): FileInfo[] {
+  async compressImages(filePaths: string[]): Promise<FileInfo[]> {
     const compressedImages: FileInfo[] = [];
-    images.forEach(async image => {
-      await this.imageCompress.compressFile(image, 1, 30, 30).then(
-        result => {
-          compressedImages.push({
-            name: image,
-            path: result
-          });
-        }
-      );
-    });
-
+    for (const filePath of filePaths) {
+      const compressedImage = await this.imageCompress.compressFile(filePath, 1, 30, 30);
+      const compressedFileInfo: FileInfo = {
+        name: filePath,
+        path: compressedImage,
+        shortName: this.takeOnlyNameFromFilePath(filePath),
+        coordinates: null,
+      };
+      compressedImages.push(compressedFileInfo);
+    }
     return compressedImages;
+  }
+
+  public takeOnlyNameFromFilePath(imagePath: string): string {
+    if (typeof imagePath !== 'undefined') {
+      return imagePath.split('\\').pop().split('/').pop();
+    }
+    return null;
   }
 }

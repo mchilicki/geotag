@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {ExifGpsInfo} from "../models/exif-gps-info";
+import {ExifGpsInfo} from '../models/exif-gps-info';
 
 @Pipe({
   name: 'longitude'
@@ -7,13 +7,13 @@ import {ExifGpsInfo} from "../models/exif-gps-info";
 export class LongitudePipe implements PipeTransform {
 
   transform(value: ExifGpsInfo): string {
-    if (value == null || value.longitude == null || value.longitude == '') {
-      return "Not set";
+    if (!value || !value.longitude) {
+      return 'Not set';
     }
     if (Number(value.longitude) >= 0) {
-      return value.longitude + ' N';
+      return value.longitude + '° N';
     } else {
-      return (Number(value.longitude) * -1) + ' S';
+      return (Number(value.longitude) * -1) + '° S';
     }
   }
 

@@ -1,9 +1,23 @@
 @import 'color';
 
+::-webkit-scrollbar {
+    width: .5em;
+    border-radius: 1em;
+    background-color: $dark;
+}
+
+::-webkit-scrollbar-thumb:window-inactive,
+::-webkit-scrollbar-thumb {
+    background-color: $primary;
+    border-radius: 1em;
+}
+
 .dark {
     background-color: $darker;
     color: $lighter;
+
     .themable {
+
         &,
         a,
         .uk-nav li,
@@ -11,8 +25,10 @@
             background-color: $darker;
             color: $lighter;
         }
+
         a,
         li>a {
+
             &:hover,
             &:active,
             &:focus {
@@ -20,15 +36,22 @@
             }
         }
     }
-  .disabled {
-    opacity: 0.4;
-  }
+
+    .disabled {
+        opacity: 0.4;
+    }
+
+    ::-webkit-scrollbar {
+        background-color: $dark;
+    }
 }
 
 .light {
     background-color: $lighter;
     color: $dark;
+
     .themable {
+
         &,
         a,
         .uk-nav li,
@@ -36,8 +59,10 @@
             background-color: $lighter;
             color: $dark;
         }
+
         a,
         li>a {
+
             &:hover,
             &:active,
             &:focus {
@@ -45,13 +70,22 @@
             }
         }
     }
-  .disabled {
-    opacity: 0.4;
-  }
+
+    .disabled {
+        opacity: 0.4;
+    }
+
+    ::-webkit-scrollbar {
+        background-color: $light;
+    }
 }
 
 .primary {
     color: $primary;
+}
+
+.bg-primary {
+    background-color: $primary;
 }
 
 .toggle {
@@ -61,6 +95,7 @@
     cursor: pointer;
     position: relative;
     transition: 0.2s linear;
+
     &:before {
         content: '';
         width: 14px;
@@ -69,15 +104,19 @@
         position: absolute;
         top: 3px;
     }
+
     &.on {
         background-color: $dark;
+
         &::before {
             background-color: $darker;
             right: 3px;
         }
     }
+
     &.off {
         background-color: $light;
+
         &::before {
             background-color: $lighter;
             left: 3px;
@@ -88,7 +127,7 @@
 .marker-image {
     height: 50px !important;
     max-height: 50px !important;
-    max-width: 50px !important;           
+    max-width: 50px !important;
 }
 
 .leaflet-popup-content-wrapper {

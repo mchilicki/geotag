@@ -1,25 +1,27 @@
-<div uk-grid uk-height-viewport="expand: true">
-  <div class="uk-width-expand@s">
-    <img [src]="name | safe">
+<div uk-grid uk-height-viewport="expand: false; offset-top: true" class="image-container">
+  <div class="uk-width-expand uk-flex uk-flex-center uk-flex-middle uk-text-center">
+    <img class="image-fullscreen" [src]="name | safe">
   </div>
 
-  <div id="sidebar" class="uk-width-auto uk-margin-small-left">
+  <div id="sidebar" class="uk-width-1-3@m uk-margin-small-left">
     <div *ngIf="!exifEditMode; else exifEdit">
-      <label for="latitude">Latitude: </label>
+      <label for="latitude" class="uk-label bg-primary">Latitude</label>
       <p id="latitude">{{itemExifInfo | latitude}}</p>
-      <label for="longitude">Longitude: </label>
+      <label for="longitude" class="uk-label bg-primary">Longitude</label>
       <p id="longitude">{{itemExifInfo | longitude}}</p>
-      <button class="uk-button uk-button-default themable" uk-icon="icon: file-edit; ratio: 1.5"
-              (click)="editButtonClicked()">Edit
+      <button class="uk-button uk-button-default themable"
+              (click)="editButtonClicked()">
+        <span class="primary" uk-icon="icon: file-edit"></span> Edit
       </button>
-      <button class="uk-button uk-button-default themable" uk-icon="icon: arrow-left; ratio: 1.5"
-              (click)="onBackButtonClick()">Back
+      <button class="uk-button uk-button-default themable"
+              (click)="onBackButtonClick()">
+        <span class="primary" uk-icon="icon: arrow-left"></span> Back
       </button>
     </div>
     <ng-template #exifEdit>
       <form [formGroup]="exifForm" (ngSubmit)="onSubmit()">
         <div>
-          <label for="latitudeValue">Latitude:</label>
+          <label for="latitudeValue" class="uk-label">Latitude</label>
           <br>
           <input type="number" id="latitudeValue" formControlName="latitudeValue" class="uk-input themable">
           <br>
@@ -32,7 +34,7 @@
         <br>
 
         <div>
-          <label for="longitudeValue">Longitude:</label>
+          <label for="longitudeValue" class="uk-label">Longitude</label>
           <br>
           <input type="number" id="longitudeValue" formControlName="longitudeValue" class="uk-input themable">
           <br>

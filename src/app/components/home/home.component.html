@@ -1,0 +1,14 @@
+<div class="gallery">
+  <div class="uk-container" *ngIf="files; else noFiles">
+    <app-gallery [files]="files"></app-gallery>
+  </div>
+  <ng-template #noFiles>
+    <div class="uk-flex uk-flex-center uk-flex-middle uk-text-center" uk-height-viewport="offset-top: true">
+      <div>
+        <span uk-icon="icon: album; ratio: 4" class="primary"></span>
+        <p>No images loaded yet</p>
+        <p><span uk-icon="chevron-left"></span> Use <strong>Upload</strong> options in the menu bar</p>
+      </div>
+    </div>
+  </ng-template>
+</div>

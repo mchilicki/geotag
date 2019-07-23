@@ -1,0 +1,9 @@
+.image-container {
+    padding: 30px;
+
+    img.image-fullscreen {
+        user-select: none;
+        -webkit-user-drag: none;
+        box-shadow: 0 0 36px 4px rgba(100, 100, 100, 0.25);
+    }
+}

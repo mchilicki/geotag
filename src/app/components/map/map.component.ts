@@ -22,6 +22,7 @@ export class MapComponent implements OnInit {
   draggedFileDiv: any;
 
   currentMarkers: Array<any> = [];
+  markersGroup: any = null;
 
   constructor(private fileService: FileDialogService,
               private coordinatesMapper: ExifCoordinatesMapper,
@@ -29,6 +30,7 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.initializeMap();
+    this.initializeMarkersGrouping();
     this.initializeDragAndDrop();
     this.fileService.uploadedFiles.subscribe(
       data => {
@@ -49,6 +51,15 @@ export class MapComponent implements OnInit {
         id: 'mapbox.streets',
         accessToken: 'pk.eyJ1Ijoia2lwaWM5NiIsImEiOiJjandob3M1b2owMjZvNDVuNmkxZnkzdGgxIn0.tYO090kjAYA-Ge6Dpb-69w'
     }).addTo(this.map);
+  }
+
+  private initializeMarkersGrouping() {
+    this.markersGroup = L.markerClusterGroup({
+      maxClusterRadius: 120,
+      animate: true,
+      animateAddingMarkers: true,
+    });
+    this.map.addLayer(this.markersGroup);
   }
 
   private initializeDragAndDrop() {
@@ -99,7 +110,7 @@ export class MapComponent implements OnInit {
   private removeAllMarkers() {
     if (this.currentMarkers) {
       for (const marker of this.currentMarkers) {
-        this.map.removeLayer(marker);
+        this.markersGroup.removeLayer(marker);
       }
     }
     this.currentMarkers.length = 0;
@@ -110,7 +121,7 @@ export class MapComponent implements OnInit {
     if (this.currentMarkers) {
       for (const marker of this.currentMarkers) {
         if (marker.options.name === markerName) {
-          this.map.removeLayer(marker);
+          this.markersGroup.removeLayer(marker);
           markersToRemove.push(markerName);
         }
       }
@@ -122,14 +133,10 @@ export class MapComponent implements OnInit {
     const marker = L.marker(coordinates,
       {
         name: filePath,
-        icon: L.icon(
-          {
-            iconUrl: filePath,
-          }),
         draggable: true
       })
       .addTo(this.map)
-      .bindPopup(fileShortName, { className: 'themable' });
+      .bindPopup(this.getPopupHtml(filePath), { className: 'themable' });
     L.DomUtil.addClass(marker._icon, 'marker-image');
     marker.addEventListener('dragstart', (event: DragEvent) => {
       this.showSavingChangesComunicate();
@@ -138,8 +145,9 @@ export class MapComponent implements OnInit {
       const latLng: LatLng = marker.getLatLng();
       this.updateExifGpsInfo(latLng, filePath);
     });
-    this.map.addLayer(marker);
     this.currentMarkers.push(marker);
+    this.markersGroup.addLayer(marker);
+    this.markersGroup.refreshClusters();
   }
 
   private showSavingChangesComunicate() {
@@ -150,6 +158,10 @@ export class MapComponent implements OnInit {
   private hideSavingChangesComunicate() {
     document.getElementById('saving').style.display = 'none';
     document.getElementById('allSaved').style.display = 'block';
+  }
+
+  private getPopupHtml(filePath: string) {
+    return '<img src="' + filePath + '"/>';
   }
 }
 
